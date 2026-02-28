@@ -86,10 +86,17 @@ const Home = ({ points, addPoints }) => {
             {/* Main Content Area - Switches based on active tab */}
             {activeTab === 'garden' && (
                 <main className="companion-area">
+                    {/* Patch over the static character in the original background */}
+                    <div className="bg-patch"></div>
+
                     {/* Render the extracted Sprout visual */}
                     <motion.div
                         className={`central-buddy-container state-${ghostEngine.ghostState.state}`}
-                        animate={{ y: ghostEngine.ghostState.state === 'thriving' ? [0, -12, 0] : [0, -2, 0] }}
+                        animate={{
+                            y: ghostEngine.ghostState.state === 'thriving' ? [0, -16, 0] : [0, -4, 0],
+                            scaleY: ghostEngine.ghostState.state === 'thriving' ? [1, 0.96, 1, 1.02, 1] : [1, 0.99, 1],
+                            scaleX: ghostEngine.ghostState.state === 'thriving' ? [1, 1.04, 1, 0.98, 1] : [1, 1.01, 1]
+                        }}
                         transition={{ repeat: Infinity, duration: ghostEngine.ghostState.state === 'thriving' ? 3 : 6, ease: "easeInOut" }}
                     >
                         <img src={buddyImg} alt="Your Sprout Bud" className="central-buddy-img" />

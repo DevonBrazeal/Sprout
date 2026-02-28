@@ -1,122 +1,153 @@
-/* SproutCharacter.css - Image based */
-.pet-container {
+/* SproutCharacter.css — Layered Character Compositing */
+
+/* ========== Stage ========== */
+.sprout-pet-stage {
+    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     cursor: pointer;
-    transition: all 1s ease-in-out;
-    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
-.pet-breathing-wrapper {
-    transform-style: preserve-3d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+.sprout-pet-stage:focus-visible {
+    outline: 3px solid var(--color-sprout-green, #34C759);
+    outline-offset: 8px;
+    border-radius: 50%;
 }
 
-.pet-image-wrapper {
+/* ========== Body Motion Container ========== */
+.sprout-body {
     position: relative;
     width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 50, 20, 0.4);
-    /* The core glowing visual aesthetic */
-    border: 4px solid rgba(255, 255, 255, 0.1);
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center bottom;
+    will-change: transform;
 }
 
-.pet-image {
+/* ========== Image Frame ========== */
+.sprout-image-frame {
+    position: relative;
+    width: 85%;
+    height: 85%;
+    border-radius: 50%;
+    overflow: hidden;
+    /* Premium glow ring */
+    box-shadow:
+        0 0 40px rgba(52, 199, 89, 0.3),
+        0 0 80px rgba(52, 199, 89, 0.1),
+        0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 3px solid rgba(52, 199, 89, 0.4);
+    transition: box-shadow 1s ease, border-color 1s ease;
+}
+
+.state-stubborn .sprout-image-frame {
+    box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.2),
+        0 10px 30px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.state-fading .sprout-image-frame {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: transparent;
+    opacity: 0.5;
+}
+
+/* ========== Base Image ========== */
+.sprout-base-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: filter 1s ease-out;
+    display: block;
+    transition: filter 1s ease;
 }
 
-.pet-glass-shine {
+.state-stubborn .sprout-base-image {
+    filter: saturate(0.3) brightness(0.7);
+}
+
+.state-fading .sprout-base-image {
+    filter: grayscale(1) brightness(0.4) blur(2px);
+}
+
+/* ========== SVG Face Overlay ========== */
+/*
+ * This is the KEY compositing trick: the SVG sits exactly on top
+ * of the photo, aligned to the character's face coordinates.
+ * The SVG viewBox is 100x100, mapped to the circular frame.
+ */
+.sprout-face-overlay {
+    position: absolute;
+    /* Position relative to the circular frame to align with the face */
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* ========== Leaf Overlay ========== */
+.sprout-leaf-overlay {
+    position: absolute;
+    top: -2%;
+    left: 30%;
+    width: 40%;
+    height: 25%;
+    transform-origin: center bottom;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ========== Glass Shine ========== */
+.sprout-glass-shine {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: linear-gradient(135deg,
-            rgba(255, 255, 255, 0.4) 0%,
-            rgba(255, 255, 255, 0) 50%,
-            rgba(0, 0, 0, 0.2) 100%);
+            rgba(255, 255, 255, 0.35) 0%,
+            rgba(255, 255, 255, 0.05) 40%,
+            transparent 60%);
     border-radius: 50%;
     pointer-events: none;
+    z-index: 4;
 }
 
-/* Dynamic State Constraints applied to the image wrapper */
-.state-thriving .pet-image-wrapper {
-    box-shadow: 0 0 60px rgba(52, 199, 89, 0.5);
-    border-color: rgba(52, 199, 89, 0.5);
+/* ========== Ground Shadow ========== */
+.sprout-ground-shadow {
+    width: 60%;
+    height: 8px;
+    margin-top: 8px;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.5) 0%, transparent 70%);
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
-.state-stubborn .pet-image {
-    filter: grayscale(80%) sepia(20%) hue-rotate(90deg) brightness(0.8);
-}
-
-.state-stubborn .pet-image-wrapper {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.05);
-}
-
-.state-fading .pet-image {
-    filter: grayscale(100%) blur(4px) brightness(0.4);
-}
-
-.state-fading .pet-image-wrapper {
-    opacity: 0.4;
-    box-shadow: none;
-    border-color: transparent;
-}
-
-/* Local Action Animations */
-.action-particles {
+/* ========== Particles ========== */
+.sprout-particle {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    font-size: 24px;
     pointer-events: none;
     z-index: 10;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
-.action-particles.feed::after {
-    content: '✨';
-    position: absolute;
-    font-size: 40px;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: floatUpBurst 1.2s ease-out forwards;
-}
+/* ========== Accessibility ========== */
+@media (prefers-reduced-motion: reduce) {
 
-.action-particles.pet::after {
-    content: '❤️';
-    position: absolute;
-    font-size: 30px;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: floatUpBurst 0.8s ease-out forwards;
-}
-
-@keyframes floatUpBurst {
-    0% {
-        transform: translate(-50%, 0) scale(0);
-        opacity: 0;
-    }
-
-    20% {
-        transform: translate(-50%, -10px) scale(1.4);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translate(-50%, -40px) scale(1);
-        opacity: 0;
+    .sprout-body,
+    .sprout-leaf-overlay,
+    .sprout-ground-shadow,
+    .sprout-particle {
+        animation: none !important;
+        transition: none !important;
     }
 }

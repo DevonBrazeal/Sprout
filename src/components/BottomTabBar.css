@@ -1,0 +1,80 @@
+/* BottomTabBar.css */
+
+.bottom-tab-bar-container {
+    position: fixed;
+    bottom: var(--space-4);
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+    padding: 0 var(--space-4);
+}
+
+.bottom-tab-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 9999px;
+    padding: var(--space-2) var(--space-2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.4);
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.tab-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.tab-item.active .tab-icon-container {
+    background: var(--color-white);
+    color: var(--color-black);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tab-item.active .tab-label {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.tab-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.tab-item:hover {
+    color: var(--color-charcoal);
+}
+
+.tab-item:focus-visible {
+    outline: 2px solid var(--color-sprout-green);
+    outline-offset: 2px;
+}

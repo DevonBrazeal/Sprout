@@ -1,0 +1,184 @@
+/* BountyBoard.css */
+.bounty-board-container {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    overflow-y: auto;
+    padding: var(--space-4);
+    padding-top: var(--space-6);
+}
+
+.bounty-header h2 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.bounty-header p {
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+}
+
+.global-challenge-card {
+    background: linear-gradient(135deg, rgba(255, 59, 48, 0.1), rgba(255, 149, 0, 0.1));
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    border-radius: 24px;
+    padding: var(--space-4);
+    margin: var(--space-4) 0;
+    box-shadow: 0 10px 40px rgba(255, 59, 48, 0.05);
+}
+
+.challenge-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 59, 48, 0.15);
+    color: #FF3B30;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+}
+
+.global-challenge-card h3 {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: var(--space-2);
+}
+
+.bounty-prize {
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+}
+
+.bounty-prize strong {
+    color: var(--color-spark-blue);
+    font-weight: 800;
+}
+
+.countdown {
+    font-family: monospace;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: #FF3B30;
+    margin-top: var(--space-2);
+}
+
+/* Submission */
+.submission-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: var(--space-5);
+}
+
+.submission-section label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.input-row {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--text-tertiary);
+}
+
+.bounty-input {
+    width: 100%;
+    height: 48px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 0 16px 0 40px;
+    font-family: inherit;
+    font-size: var(--text-md);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.bounty-input:focus {
+    outline: none;
+    border-color: var(--color-sprout-green);
+    box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.1);
+}
+
+/* Leaderboard */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: var(--space-3);
+}
+
+.section-header h3 {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 12px 16px;
+    border-radius: 12px;
+}
+
+.leaderboard-row.is-me {
+    background: var(--color-sprout-green);
+    border-color: var(--color-sprout-green);
+    color: white;
+    box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+}
+
+.leaderboard-row.is-me .user,
+.leaderboard-row.is-me .views,
+.leaderboard-row.is-me .rank {
+    color: white;
+}
+
+.rank {
+    font-weight: 800;
+    width: 40px;
+    color: var(--text-tertiary);
+}
+
+.user {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.views {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-secondary);
+}

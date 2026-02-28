@@ -1,0 +1,186 @@
+/* SproutShop.css */
+.sprout-shop-container {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    overflow-y: auto;
+    padding: var(--space-4);
+    padding-top: var(--space-6);
+}
+
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-5);
+}
+
+.shop-header h2 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.shop-balance {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.balance-pill {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+@media (prefers-color-scheme: dark) {
+    .balance-pill {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.balance-pill.fiat {
+    color: #34C759;
+    background: rgba(52, 199, 89, 0.1);
+}
+
+.shop-section {
+    margin-bottom: var(--space-6);
+}
+
+.shop-section h3 {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.section-desc {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-3);
+    margin-top: 4px;
+}
+
+/* Utilities (Bailouts/Sabotage) */
+.utility-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.utility-card {
+    display: flex;
+    align-items: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: var(--space-3);
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+
+.util-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--space-3);
+    flex-shrink: 0;
+}
+
+.bailout .util-icon-wrapper {
+    background: rgba(255, 59, 48, 0.1);
+}
+
+.sabotage .util-icon-wrapper {
+    background: rgba(175, 82, 222, 0.1);
+}
+
+.util-info {
+    flex: 1;
+}
+
+.util-info h4 {
+    font-size: var(--text-md);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.util-info p {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.3;
+    padding-right: var(--space-2);
+}
+
+.buy-btn.fiat-btn {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+/* Cosmetics Grid */
+.cosmetics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+}
+
+.cosmetic-item {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cosmetic-preview {
+    width: 80px;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-3);
+    color: var(--text-secondary);
+}
+
+@media (prefers-color-scheme: dark) {
+    .cosmetic-preview {
+        background: rgba(255, 255, 255, 0.03);
+    }
+}
+
+.cosmetic-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: var(--space-2);
+}
+
+.cosmetic-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.buy-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}

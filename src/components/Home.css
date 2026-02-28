@@ -1,0 +1,288 @@
+/* Home.css */
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center bottom;
+    background-color: var(--bg-primary);
+    /* Fallback */
+}
+
+.layout-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        filter: blur(10px);
+    }
+
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+.home-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-6) var(--space-4) var(--space-2) var(--space-4);
+    z-index: 10;
+    /* Top light white gradient to ensure header text readability */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.sprout-logo {
+    font-size: var(--text-lg);
+    font-weight: 500;
+    color: var(--text-primary);
+    opacity: 0.8;
+    letter-spacing: -0.01em;
+}
+
+.header-points {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.point-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.spark-icon {
+    font-size: 14px;
+}
+
+.sprout-icon {
+    font-size: 14px;
+}
+
+/* The new Ghost HUD */
+.ghost-hud {
+    position: absolute;
+    top: 80px;
+    left: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    z-index: 10;
+}
+
+.hud-stat {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 6px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.hud-stat:active {
+    transform: scale(0.95);
+}
+
+.hud-label {
+    font-size: 10px;
+    font-weight: 700;
+    margin: 0 8px;
+    color: rgba(0, 0, 0, 0.6);
+    min-width: 45px;
+}
+
+.hud-bar-bg {
+    width: 60px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.hud-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease-out, background-color 0.5s ease-out;
+}
+
+.companion-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    /* Push to bottom naturally */
+    position: relative;
+    padding-bottom: 120px;
+    /* Room for tab bar */
+}
+
+.central-buddy-container {
+    width: 320px;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    filter: drop-shadow(0 30px 40px rgba(0, 50, 20, 0.2));
+    /* Positioning character to the left slightly as in the mockup */
+    transform: translateX(-15%);
+    transition: filter 1s ease-out, opacity 1s ease-out;
+    /* Smooth transition between PRD Tamagotchi states */
+}
+
+/* PRD Constraints: Tamagotchi States simulated via CSS */
+.state-stubborn {
+    filter: grayscale(80%) drop-shadow(0 30px 40px rgba(0, 0, 0, 0.1));
+}
+
+.state-fading {
+    filter: grayscale(100%);
+    opacity: 0.3;
+}
+
+.central-buddy-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Blend mode to make sure any white background from generation blends somewhat seamlessly */
+    mix-blend-mode: multiply;
+}
+
+@media (prefers-color-scheme: dark) {
+    .central-buddy-img {
+        mix-blend-mode: screen;
+    }
+}
+
+.ghost-status-bubble {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: black;
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    animation: float 2s ease-in-out infinite;
+}
+
+.ghost-status-bubble.sad {
+    background: #333;
+    color: white;
+}
+
+.ghost-status-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+    display: block;
+    width: 0;
+}
+
+.ghost-status-bubble.sad::after {
+    border-color: #333 transparent transparent transparent;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(-50%, 0px);
+    }
+
+    50% {
+        transform: translate(-50%, -4px);
+    }
+
+    100% {
+        transform: translate(-50%, 0px);
+    }
+}
+
+.habit-card {
+    position: absolute;
+    right: var(--space-4);
+    top: 45%;
+    /* Slightly higher than buddy */
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: var(--space-3);
+    border-radius: 20px;
+    width: 220px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.habit-header {
+    margin-bottom: var(--space-1);
+}
+
+.habit-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.habit-title {
+    font-size: var(--text-md);
+    font-weight: 500;
+    line-height: 1.3;
+    color: rgba(0, 0, 0, 0.9);
+}
+
+/* Image 3 specific styled button */
+.photo-btn {
+    background: linear-gradient(180deg, #93C5FD 0%, #3B82F6 100%);
+    color: white;
+    border-radius: 12px;
+    /* slightly squarer pill */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    padding: var(--space-1) var(--space-2);
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+    .habit-card {
+        position: relative;
+        right: 0;
+        top: 0;
+        margin-top: calc(-1 * var(--space-4));
+        width: 90%;
+        max-width: 320px;
+        transform: none;
+    }
+
+    .central-buddy-container {
+        transform: none;
+        /* Center him on mobile */
+    }
+}

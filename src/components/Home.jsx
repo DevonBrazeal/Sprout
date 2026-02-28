@@ -12,7 +12,7 @@ import DigitalGarden from './DigitalGarden';
 import SproutShop from './SproutShop';
 import { useGhostEngine } from '../hooks/useGhostEngine';
 
-import buddyImg from '../assets/prd_sprout_crop.jpg';
+import GhostCharacter from './GhostCharacter';
 import './Home.css';
 
 const Home = ({ points, addPoints }) => {
@@ -77,16 +77,8 @@ const Home = ({ points, addPoints }) => {
                 <main className="companion-area">
 
                     {/* Render the extracted Sprout visual */}
-                    <motion.div
-                        className={`central-buddy-container state-${ghostEngine.ghostState.state}`}
-                        animate={{
-                            y: ghostEngine.ghostState.state === 'thriving' ? [0, -16, 0] : [0, -4, 0],
-                            scaleY: ghostEngine.ghostState.state === 'thriving' ? [1, 0.96, 1, 1.02, 1] : [1, 0.99, 1],
-                            scaleX: ghostEngine.ghostState.state === 'thriving' ? [1, 1.04, 1, 0.98, 1] : [1, 1.01, 1]
-                        }}
-                        transition={{ repeat: Infinity, duration: ghostEngine.ghostState.state === 'thriving' ? 3 : 6, ease: "easeInOut" }}
-                    >
-                        <img src={buddyImg} alt="Your Sprout Bud" className="central-buddy-img" />
+                    <div className="central-buddy-container">
+                        <GhostCharacter state={ghostEngine.ghostState.state} size={300} />
 
                         {ghostEngine.ghostState.state === 'stubborn' && (
                             <div className="ghost-status-bubble">I'm starving. Feed me Sparks.</div>
@@ -94,7 +86,7 @@ const Home = ({ points, addPoints }) => {
                         {ghostEngine.ghostState.state === 'fading' && (
                             <div className="ghost-status-bubble sad">Fading away... 🪦</div>
                         )}
-                    </motion.div>
+                    </div>
 
                     {/* Today's Habit Card */}
                     <motion.div

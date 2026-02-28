@@ -19,6 +19,7 @@ const Home = ({ points, addPoints }) => {
     const [activeTab, setActiveTab] = useState('garden');
     const [toastMessage, setToastMessage] = useState(null);
     const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+    const [sproutAction, setSproutAction] = useState(null);
 
     // Initialize the Tamagotchi Engine
     const sproutEngine = useSproutEngine();
@@ -31,6 +32,7 @@ const Home = ({ points, addPoints }) => {
         // AI verification JSON passed
         addPoints('spark', 10);
         sproutEngine.logHabitSpark(); // Feeds the sprout manually 100% essence
+        setSproutAction('feed'); // Triggers local animated wrapper jump
         showToast('AI Verified. +10 Spark!', 10);
     };
 
@@ -78,7 +80,12 @@ const Home = ({ points, addPoints }) => {
 
                     {/* Render the extracted Sprout visual */}
                     <div className="central-buddy-container">
-                        <SproutCharacter state={sproutEngine.sproutState.state} size={300} />
+                        <SproutCharacter
+                            state={sproutEngine.sproutState.state}
+                            size={300}
+                            action={sproutAction}
+                            onActionComplete={() => setSproutAction(null)}
+                        />
 
                         {sproutEngine.sproutState.state === 'stubborn' && (
                             <div className="sprout-status-bubble">I'm starving. Feed me Sparks.</div>

@@ -72,3 +72,51 @@
     box-shadow: none;
     border-color: transparent;
 }
+
+/* Local Action Animations */
+.action-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.action-particles.feed::after {
+    content: '✨';
+    position: absolute;
+    font-size: 40px;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: floatUpBurst 1.2s ease-out forwards;
+}
+
+.action-particles.pet::after {
+    content: '❤️';
+    position: absolute;
+    font-size: 30px;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: floatUpBurst 0.8s ease-out forwards;
+}
+
+@keyframes floatUpBurst {
+    0% {
+        transform: translate(-50%, 0) scale(0);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translate(-50%, -10px) scale(1.4);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -40px) scale(1);
+        opacity: 0;
+    }
+}

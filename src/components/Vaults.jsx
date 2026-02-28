@@ -34,27 +34,27 @@ const Vaults = () => {
                     </div>
 
                     <div className="roster-grid">
-                        {/* Mocking the 5 Ghosts */}
+                        {/* Mocking the 5 Sprouts */}
                         <div className="roster-member surviving">
-                            <div className="ghost-avatar user" />
+                            <div className="sprout-avatar user" />
                             <span className="name">You</span>
                         </div>
                         <div className="roster-member surviving">
-                            <div className="ghost-avatar" />
+                            <div className="sprout-avatar" />
                             <span className="name">Marcus</span>
                         </div>
                         <div className="roster-member surviving">
-                            <div className="ghost-avatar" />
+                            <div className="sprout-avatar" />
                             <span className="name">Elena</span>
                         </div>
                         <div className="roster-member eliminated">
-                            <div className="ghost-avatar dunced" >
+                            <div className="sprout-avatar dunced" >
                                 <div className="dunce-cap"></div>
                             </div>
                             <span className="name">Sarah</span>
                         </div>
                         <div className="roster-member surviving">
-                            <div className="ghost-avatar" />
+                            <div className="sprout-avatar" />
                             <span className="name">David</span>
                         </div>
                     </div>

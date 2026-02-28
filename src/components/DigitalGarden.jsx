@@ -24,7 +24,7 @@ const DigitalGarden = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            <div className="ghost-avatar user" />
+                            <div className="sprout-avatar user" />
                             <span className="member-name">Friend {i}</span>
                             <span className="member-vibe">100% Vibe</span>
                         </motion.div>

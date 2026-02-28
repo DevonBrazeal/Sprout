@@ -27,7 +27,7 @@ const AIVerificationModal = ({ isOpen, onClose, onVerifySuccess }) => {
             if (isSuccess) {
                 setResult({
                     success: true,
-                    message: 'Verified! You earned +10 Spark and fed your Ghost.'
+                    message: 'Verified! You earned +10 Spark and fed your Sprout.'
                 });
             } else {
                 setResult({

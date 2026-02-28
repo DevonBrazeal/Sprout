@@ -62,7 +62,7 @@ const SproutShop = ({ sparkPoints, onPurchase }) => {
                         </div>
                         <div className="util-info">
                             <h4>Social Sabotage</h4>
-                            <p>Force a friend's Ghost to wear a silly outfit in the public stream.</p>
+                            <p>Force a friend's Sprout to wear a silly outfit in the public stream.</p>
                         </div>
                         <Button variant="secondary" onClick={handleSabotage} className="buy-btn fiat-btn">
                             $0.99
@@ -73,7 +73,7 @@ const SproutShop = ({ sparkPoints, onPurchase }) => {
 
             {/* Cosmetics Section (Spark Points) */}
             <section className="shop-section cosmetics-section">
-                <h3>Ghost Cosmetics</h3>
+                <h3>Sprout Cosmetics</h3>
                 <p className="section-desc">Spend your hard-earned Spark points.</p>
 
                 <div className="cosmetics-grid">

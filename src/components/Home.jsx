@@ -10,9 +10,9 @@ import Vaults from './Vaults';
 import BountyBoard from './BountyBoard';
 import DigitalGarden from './DigitalGarden';
 import SproutShop from './SproutShop';
-import { useGhostEngine } from '../hooks/useGhostEngine';
+import { useSproutEngine } from '../hooks/useSproutEngine';
 
-import GhostCharacter from './GhostCharacter';
+import SproutCharacter from './SproutCharacter';
 import './Home.css';
 
 const Home = ({ points, addPoints }) => {
@@ -21,7 +21,7 @@ const Home = ({ points, addPoints }) => {
     const [isAiModalOpen, setIsAiModalOpen] = useState(false);
 
     // Initialize the Tamagotchi Engine
-    const ghostEngine = useGhostEngine();
+    const sproutEngine = useSproutEngine();
 
     const handleVerifyPhotoClick = () => {
         setIsAiModalOpen(true);
@@ -30,7 +30,7 @@ const Home = ({ points, addPoints }) => {
     const handleVerificationSuccess = () => {
         // AI verification JSON passed
         addPoints('spark', 10);
-        ghostEngine.logHabitSpark(); // Feeds the ghost manually 100% essence
+        sproutEngine.logHabitSpark(); // Feeds the sprout manually 100% essence
         showToast('AI Verified. +10 Spark!', 10);
     };
 
@@ -53,22 +53,22 @@ const Home = ({ points, addPoints }) => {
                 points={points}
             />
 
-            {/* Ghost HUD Stats (Energy, Essence, Vibe) */}
-            <div className="ghost-hud">
-                <div className="hud-stat" onClick={ghostEngine.logMorningSpark}>
-                    <Battery size={14} color={ghostEngine.ghostState.energy > 50 ? "#34C759" : "#FF3B30"} />
+            {/* Sprout HUD Stats (Energy, Essence, Vibe) */}
+            <div className="sprout-hud">
+                <div className="hud-stat" onClick={sproutEngine.logMorningSpark}>
+                    <Battery size={14} color={sproutEngine.sproutState.energy > 50 ? "#34C759" : "#FF3B30"} />
                     <span className="hud-label">Energy</span>
-                    <div className="hud-bar-bg"><div className="hud-bar-fill" style={{ width: `${ghostEngine.ghostState.energy}%`, backgroundColor: ghostEngine.ghostState.energy > 50 ? "#34C759" : "#FF3B30" }}></div></div>
+                    <div className="hud-bar-bg"><div className="hud-bar-fill" style={{ width: `${sproutEngine.sproutState.energy}%`, backgroundColor: sproutEngine.sproutState.energy > 50 ? "#34C759" : "#FF3B30" }}></div></div>
                 </div>
-                <div className="hud-stat" onClick={ghostEngine.debugForceDecay}>
+                <div className="hud-stat" onClick={sproutEngine.debugForceDecay}>
                     <Droplets size={14} color="#0A84FF" />
                     <span className="hud-label">Essence</span>
-                    <div className="hud-bar-bg"><div className="hud-bar-fill" style={{ width: `${ghostEngine.ghostState.essence}%`, backgroundColor: "#0A84FF" }}></div></div>
+                    <div className="hud-bar-bg"><div className="hud-bar-fill" style={{ width: `${sproutEngine.sproutState.essence}%`, backgroundColor: "#0A84FF" }}></div></div>
                 </div>
                 <div className="hud-stat">
                     <Heart size={14} color="#FF2D55" />
                     <span className="hud-label">Vibe</span>
-                    <div className="hud-bar-bg"><div className="hud-bar-fill" style={{ width: `${ghostEngine.ghostState.vibe}%`, backgroundColor: "#FF2D55" }}></div></div>
+                    <div className="hud-bar-bg"><div className="hud-bar-fill" style={{ width: `${sproutEngine.sproutState.vibe}%`, backgroundColor: "#FF2D55" }}></div></div>
                 </div>
             </div>
 
@@ -78,13 +78,13 @@ const Home = ({ points, addPoints }) => {
 
                     {/* Render the extracted Sprout visual */}
                     <div className="central-buddy-container">
-                        <GhostCharacter state={ghostEngine.ghostState.state} size={300} />
+                        <SproutCharacter state={sproutEngine.sproutState.state} size={300} />
 
-                        {ghostEngine.ghostState.state === 'stubborn' && (
-                            <div className="ghost-status-bubble">I'm starving. Feed me Sparks.</div>
+                        {sproutEngine.sproutState.state === 'stubborn' && (
+                            <div className="sprout-status-bubble">I'm starving. Feed me Sparks.</div>
                         )}
-                        {ghostEngine.ghostState.state === 'fading' && (
-                            <div className="ghost-status-bubble sad">Fading away... 🪦</div>
+                        {sproutEngine.sproutState.state === 'fading' && (
+                            <div className="sprout-status-bubble sad">Fading away... 🪦</div>
                         )}
                     </div>
 
@@ -109,7 +109,7 @@ const Home = ({ points, addPoints }) => {
 
             {activeTab === 'spark' && (
                 <SparkStream
-                    onReceiveSunlight={() => ghostEngine.receiveSunlight()}
+                    onReceiveSunlight={() => sproutEngine.receiveSunlight()}
                 />
             )}
 

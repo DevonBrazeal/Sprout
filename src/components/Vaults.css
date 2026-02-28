@@ -108,7 +108,7 @@
     gap: var(--space-1);
 }
 
-.ghost-avatar {
+.sprout-avatar {
     width: 40px;
     height: 48px;
     background: var(--glass-border);
@@ -117,12 +117,12 @@
     transition: all 0.3s;
 }
 
-.ghost-avatar.user {
+.sprout-avatar.user {
     background: var(--color-sprout-green);
     box-shadow: 0 0 10px rgba(52, 199, 89, 0.4);
 }
 
-.roster-member.eliminated .ghost-avatar {
+.roster-member.eliminated .sprout-avatar {
     background: rgba(0, 0, 0, 0.2);
     opacity: 0.5;
     filter: grayscale(1);
@@ -136,7 +136,7 @@
 
 /* 
  * The PRD "Dunce Cap" mechanic
- * When a user gets eliminated, their 3D ghost receives this cosmetic permanently. 
+ * When a user gets eliminated, their 3D sprout receives this cosmetic permanently. 
  */
 .dunce-cap {
     position: absolute;

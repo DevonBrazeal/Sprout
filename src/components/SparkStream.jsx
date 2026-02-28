@@ -43,7 +43,7 @@ const SparkStream = ({ onReceiveSunlight }) => {
         // Animate local UI
         setGivenSunlight(prev => ({ ...prev, [id]: true }));
 
-        // Simulate PRD: "Tapping the photo sends Sunlight... replenish Ghost's Vibe"
+        // Simulate PRD: "Tapping the photo sends Sunlight... replenish Sprout's Vibe"
         // In a real app, this sends to the OTHER user. For the demo, we'll give the 
         // current user a small vibe bump for being social.
         if (onReceiveSunlight) onReceiveSunlight();

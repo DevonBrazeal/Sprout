@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import petImage from '../assets/sprout_pet.jpg';
-import './GhostCharacter.css';
+import './SproutCharacter.css';
 
-const GhostCharacter = ({ state = 'thriving', size = 200 }) => {
+const SproutCharacter = ({ state = 'thriving', size = 200 }) => {
     const containerRef = useRef(null);
 
     // Track mouse to softly rotate the frame representing the pet looking around
@@ -80,4 +80,4 @@ const GhostCharacter = ({ state = 'thriving', size = 200 }) => {
     );
 };
 
-export default GhostCharacter;
+export default SproutCharacter;

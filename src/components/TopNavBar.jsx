@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Leaf, Zap, ShieldAlert, Flame, Star, ShoppingBag } from 'lucide-react';
-import './BottomTabBar.css';
+import './TopNavBar.css';
 
 const tabs = [
     { id: 'garden', label: 'Sanctuary', icon: Leaf },
@@ -12,10 +12,11 @@ const tabs = [
     { id: 'shop', label: 'Shop', icon: ShoppingBag },
 ];
 
-const BottomTabBar = ({ activeTab, onTabSelect }) => {
+const TopNavBar = ({ activeTab, onTabSelect, points }) => {
     return (
-        <div className="bottom-tab-bar-container">
-            <nav className="bottom-tab-bar">
+        <div className="top-nav-bar-container">
+            <h1 className="nav-logo">Sprout</h1>
+            <nav className="top-nav-bar">
                 {tabs.map((tab) => {
                     const Icon = tab.icon;
                     const isActive = activeTab === tab.id;
@@ -25,20 +26,30 @@ const BottomTabBar = ({ activeTab, onTabSelect }) => {
                             key={tab.id}
                             className={`tab-item ${isActive ? 'active' : ''}`}
                             onClick={() => onTabSelect(tab.id)}
-                            whileTap={{ scale: 0.9 }}
+                            whileTap={{ scale: 0.95 }}
                             aria-label={tab.label}
                             aria-pressed={isActive}
                         >
                             <div className="tab-icon-container">
-                                <Icon size={16} strokeWidth={isActive ? 2.5 : 2} />
+                                <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
                             </div>
                             <span className="tab-label">{tab.label}</span>
                         </motion.button>
                     );
                 })}
             </nav>
+            <div className="nav-placeholder header-points">
+                <div className="point-stat">
+                    <span className="spark-icon">✨</span>
+                    <span style={{ color: 'white' }}>Spark: {points?.spark || 0}</span>
+                </div>
+                <div className="point-stat">
+                    <span className="sprout-icon">💵</span>
+                    <span style={{ color: 'white' }}>Fiat: $20.00</span>
+                </div>
+            </div>
         </div>
     );
 };
 
-export default BottomTabBar;
+export default TopNavBar;

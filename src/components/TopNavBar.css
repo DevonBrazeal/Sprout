@@ -1,29 +1,41 @@
-/* BottomTabBar.css */
+/* TopNavBar.css */
 
-.bottom-tab-bar-container {
-    position: fixed;
-    bottom: var(--space-4);
-    left: 0;
-    right: 0;
+.top-nav-bar-container {
+    width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-5);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
-    padding: 0 var(--space-4);
 }
 
-.bottom-tab-bar {
+.nav-logo {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    color: var(--color-white);
+    letter-spacing: -0.02em;
+    flex: 1;
+    /* Match placeholder to keep nav centered */
+}
+
+.nav-placeholder {
+    flex: 1;
+}
+
+.nav-placeholder.header-points {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+}
+
+.top-nav-bar {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    width: 100%;
-    max-width: 400px;
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 9999px;
-    padding: var(--space-2) var(--space-2);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    gap: var(--space-4);
 }
 
 .tab-item {
@@ -38,7 +50,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.6);
     transition: color 0.2s ease;
     position: relative;
 }
@@ -67,11 +79,11 @@
 .tab-label {
     font-size: 10px;
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .tab-item:hover {
-    color: var(--color-charcoal);
+    color: var(--color-white);
 }
 
 .tab-item:focus-visible {

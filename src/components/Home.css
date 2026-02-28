@@ -7,10 +7,8 @@
     height: 100vh;
     position: relative;
     overflow: hidden;
-    background-size: cover;
-    background-position: center bottom;
-    background-color: var(--bg-primary);
-    /* Fallback */
+    /* Replace static bg with dynamic aesthetic radial lighting */
+    background: radial-gradient(circle at center 60%, #1e2024 0%, #0a0c0e 60%, #000000 100%);
 }
 
 .layout-fade-in {
@@ -130,22 +128,7 @@
     /* Room for tab bar */
 }
 
-/* Background Patch covers the duplicate Sprout embedded in the bg image */
-.bg-patch {
-    position: absolute;
-    bottom: 120px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 320px;
-    height: 320px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(14, 16, 18, 1) 30%, rgba(14, 16, 18, 0.8) 50%, transparent 80%);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    z-index: 1;
-    /* Under the buddy */
-}
-
+/* Room for tab bar */
 .central-buddy-container {
     width: 320px;
     height: 320px;

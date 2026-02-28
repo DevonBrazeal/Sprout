@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Camera, Battery, Droplets, Heart } from 'lucide-react';
-import BottomTabBar from './BottomTabBar';
+import TopNavBar from './TopNavBar';
 import Button from './Button';
 import Toast from './Toast';
 import AIVerificationModal from './AIVerificationModal';
@@ -13,7 +13,6 @@ import SproutShop from './SproutShop';
 import { useGhostEngine } from '../hooks/useGhostEngine';
 
 import buddyImg from '../assets/prd_sprout_crop.jpg';
-import bgImg from '../assets/prd_bg.jpg';
 import './Home.css';
 
 const Home = ({ points, addPoints }) => {
@@ -40,7 +39,7 @@ const Home = ({ points, addPoints }) => {
     };
 
     return (
-        <div className="home-container layout-fade-in" style={{ backgroundImage: `url(${bgImg})` }}>
+        <div className="home-container layout-fade-in">
             <Toast
                 isVisible={!!toastMessage}
                 message={toastMessage?.message}
@@ -48,21 +47,11 @@ const Home = ({ points, addPoints }) => {
                 onClose={() => setToastMessage(null)}
             />
 
-            {/* Header */}
-            <header className="home-header">
-                <h1 className="sprout-logo">Sprout</h1>
-
-                <div className="header-points">
-                    <div className="point-stat">
-                        <span className="spark-icon">✨</span>
-                        <span>Spark: {points.spark}</span>
-                    </div>
-                    <div className="point-stat">
-                        <span className="sprout-icon">💵</span>
-                        <span>Fiat: $20.00</span>
-                    </div>
-                </div>
-            </header>
+            <TopNavBar
+                activeTab={activeTab}
+                onTabSelect={setActiveTab}
+                points={points}
+            />
 
             {/* Ghost HUD Stats (Energy, Essence, Vibe) */}
             <div className="ghost-hud">
@@ -86,8 +75,6 @@ const Home = ({ points, addPoints }) => {
             {/* Main Content Area - Switches based on active tab */}
             {activeTab === 'garden' && (
                 <main className="companion-area">
-                    {/* Patch over the static character in the original background */}
-                    <div className="bg-patch"></div>
 
                     {/* Render the extracted Sprout visual */}
                     <motion.div
@@ -139,7 +126,6 @@ const Home = ({ points, addPoints }) => {
             {activeTab === 'profile' && <DigitalGarden />}
             {activeTab === 'shop' && <SproutShop sparkPoints={points.spark} onPurchase={(price) => addPoints('spark', -price)} />}
 
-            <BottomTabBar activeTab={activeTab} onTabSelect={setActiveTab} />
             <AIVerificationModal
                 isOpen={isAiModalOpen}
                 onClose={() => setIsAiModalOpen(false)}

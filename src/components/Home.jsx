@@ -12,6 +12,10 @@ import DigitalGarden from './DigitalGarden';
 import SproutShop from './SproutShop';
 import { useSproutEngine } from '../hooks/useSproutEngine';
 import SproutCharacter from './SproutCharacter';
+import btnWater from '../assets/btn_water.png';
+import btnFeed from '../assets/btn_feed.png';
+import btnSun from '../assets/btn_sun.png';
+import btnPet from '../assets/btn_pet.png';
 import './Home.css';
 
 // ── Background Themes ──────────────────────────────────────────────
@@ -241,19 +245,19 @@ const Home = ({ points, addPoints }) => {
 
                         {/* Mini stat orbs below sprout */}
                         <div className="mini-stats">
-                            <MiniStat emoji="💧" value={engine.stats.water} color="#42a5f5" />
-                            <MiniStat emoji="🍽️" value={engine.stats.food} color="#ff9800" />
-                            <MiniStat emoji="☀️" value={engine.stats.sunlight} color="#fdd835" />
-                            <MiniStat emoji="💚" value={engine.stats.happiness} color="#e91e63" />
+                            <MiniStat img={btnWater} value={engine.stats.water} color="#42a5f5" />
+                            <MiniStat img={btnFeed} value={engine.stats.food} color="#ff9800" />
+                            <MiniStat img={btnSun} value={engine.stats.sunlight} color="#fdd835" />
+                            <MiniStat img={btnPet} value={engine.stats.happiness} color="#e91e63" />
                         </div>
                     </section>
 
                     {/* Care Action Buttons - floating at bottom of hero */}
                     <nav className="care-buttons" aria-label="Care actions">
-                        <CareButton icon="💧" label="WATER" disabled={!!sproutAction} onClick={() => handleCare('water')} />
-                        <CareButton icon="🍽️" label="FEED" disabled={!!sproutAction} onClick={() => handleCare('feed')} />
-                        <CareButton icon="☀️" label="SUN" disabled={!!sproutAction} onClick={() => handleCare('sun')} />
-                        <CareButton icon="🤗" label="PET" disabled={!!sproutAction} onClick={() => handleCare('pet')} />
+                        <CareButton img={btnWater} label="WATER" disabled={!!sproutAction} onClick={() => handleCare('water')} />
+                        <CareButton img={btnFeed} label="FEED" disabled={!!sproutAction} onClick={() => handleCare('feed')} />
+                        <CareButton img={btnSun} label="SUN" disabled={!!sproutAction} onClick={() => handleCare('sun')} />
+                        <CareButton img={btnPet} label="PET" disabled={!!sproutAction} onClick={() => handleCare('pet')} />
                     </nav>
 
                     {/* Expandable Details Section */}
@@ -390,14 +394,14 @@ const Home = ({ points, addPoints }) => {
 
 // ── Sub-Components ────────────────────────────────────────────────
 
-function MiniStat({ emoji, value, color }) {
+function MiniStat({ img, value, color }) {
     const low = value < 30;
     return (
         <div className="mini-stat" title={`${Math.round(value)}%`}>
             <div className="mini-stat-ring" style={{
                 background: `conic-gradient(${low ? '#e74c3c' : color} ${value * 3.6}deg, rgba(255,255,255,0.2) 0deg)`
             }}>
-                <span className="mini-stat-emoji">{emoji}</span>
+                <img src={img} alt="" className="mini-stat-img" />
             </div>
         </div>
     );
@@ -427,10 +431,10 @@ function StatBar({ label, value, color, icon }) {
     );
 }
 
-function CareButton({ icon, label, disabled, onClick }) {
+function CareButton({ img, label, disabled, onClick }) {
     return (
         <button className="care-btn" disabled={disabled} onClick={onClick}>
-            <span className="care-btn-icon">{icon}</span>
+            <img src={img} alt={label} className="care-btn-img" />
             <span className="care-btn-label">{label}</span>
         </button>
     );

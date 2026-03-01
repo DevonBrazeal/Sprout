@@ -70,6 +70,7 @@ const IntroSequence = ({ clips = [], onComplete, skippable = true }) => {
                         playsInline
                         onLoadedData={handleVideoLoaded}
                         onEnded={goNext}
+                        onError={goNext}
                     />
                 </motion.div>
             </AnimatePresence>

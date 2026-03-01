@@ -6,18 +6,16 @@ import IntroSequence from './IntroSequence';
 import idleVideo from '../assets/sprout_idle.mp4';
 import './Onboarding.css';
 
-// ── Intro video imports (graceful fallback if not yet present) ──
-let introSeedFall, introGerminate, introEmerge, introAlive;
+// ── Intro video imports (only import files that exist) ──
+let introSeedFall, introGerminate, introEmerge;
 try { introSeedFall = new URL('../assets/intro_seed_fall.mp4', import.meta.url).href; } catch (e) { introSeedFall = null; }
 try { introGerminate = new URL('../assets/intro_germinate.mp4', import.meta.url).href; } catch (e) { introGerminate = null; }
 try { introEmerge = new URL('../assets/intro_emerge.mp4', import.meta.url).href; } catch (e) { introEmerge = null; }
-try { introAlive = new URL('../assets/intro_alive.mp4', import.meta.url).href; } catch (e) { introAlive = null; }
 
-// Clips 2-4: play after the user taps the seed
+// Clips 2-3: play after the user taps the seed (add intro_alive when ready)
 const GROWTH_CLIPS = [
     introGerminate && { id: 'germinate', src: introGerminate },
     introEmerge && { id: 'emerge', src: introEmerge },
-    introAlive && { id: 'alive', src: introAlive },
 ].filter(Boolean);
 
 /**

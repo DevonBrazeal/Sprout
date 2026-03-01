@@ -188,21 +188,80 @@ const Onboarding = ({ onComplete, addPoints }) => {
                     />
                 )}
 
-                {/* ═══ Vibe Check ═══ */}
+                {/* ═══ Vibe Check — Premium Design ═══ */}
                 {step === 'vibe' && (
                     <motion.div
                         key="vibe"
-                        className="onboarding-step center-content"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, y: -50 }}
+                        className="onboarding-step vibe-screen"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, y: -30 }}
+                        transition={{ duration: 0.8 }}
                     >
-                        <h2>Choose their Vibe</h2>
-                        <p className="subtitle">This determines their initial personality.</p>
-                        <div className="vibe-buttons">
-                            <Button onClick={() => handleVibeSelect('Zen')} variant="secondary">🧘 Zen</Button>
-                            <Button onClick={() => handleVibeSelect('Hype')} variant="secondary">⚡️ Hype</Button>
-                            <Button onClick={() => handleVibeSelect('Kind')} variant="secondary">💛 Kind</Button>
+                        <motion.div
+                            className="vibe-header"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2, duration: 0.7 }}
+                        >
+                            <h2 className="vibe-title">Set the Tone.</h2>
+                            <p className="vibe-subtitle">Every sprout grows differently.<br />How will yours begin?</p>
+                        </motion.div>
+
+                        <div className="vibe-cards">
+                            {/* Zen */}
+                            <motion.button
+                                className="vibe-card vibe-zen"
+                                onClick={() => handleVibeSelect('Zen')}
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4, type: 'spring', stiffness: 120, damping: 18 }}
+                                whileHover={{ y: -4, scale: 1.02 }}
+                                whileTap={{ scale: 0.97 }}
+                            >
+                                <div className="vibe-card-glyph">◯</div>
+                                <div className="vibe-card-content">
+                                    <h3>Zen</h3>
+                                    <p className="vibe-card-tagline">Stillness is strength</p>
+                                    <p className="vibe-card-desc">Your sprout grows through patience, mindfulness, and quiet consistency.</p>
+                                </div>
+                            </motion.button>
+
+                            {/* Hype */}
+                            <motion.button
+                                className="vibe-card vibe-hype"
+                                onClick={() => handleVibeSelect('Hype')}
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.55, type: 'spring', stiffness: 120, damping: 18 }}
+                                whileHover={{ y: -4, scale: 1.02 }}
+                                whileTap={{ scale: 0.97 }}
+                            >
+                                <div className="vibe-card-glyph">△</div>
+                                <div className="vibe-card-content">
+                                    <h3>Hype</h3>
+                                    <p className="vibe-card-tagline">Energy is everything</p>
+                                    <p className="vibe-card-desc">Your sprout feeds on momentum, streaks, and the thrill of leveling up.</p>
+                                </div>
+                            </motion.button>
+
+                            {/* Kind */}
+                            <motion.button
+                                className="vibe-card vibe-kind"
+                                onClick={() => handleVibeSelect('Kind')}
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.7, type: 'spring', stiffness: 120, damping: 18 }}
+                                whileHover={{ y: -4, scale: 1.02 }}
+                                whileTap={{ scale: 0.97 }}
+                            >
+                                <div className="vibe-card-glyph">❋</div>
+                                <div className="vibe-card-content">
+                                    <h3>Kind</h3>
+                                    <p className="vibe-card-tagline">Growth through giving</p>
+                                    <p className="vibe-card-desc">Your sprout thrives on compassion, generosity, and meaningful connection.</p>
+                                </div>
+                            </motion.button>
                         </div>
                     </motion.div>
                 )}

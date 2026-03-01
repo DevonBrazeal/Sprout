@@ -252,8 +252,8 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    width: 84px;
-    min-height: 92px;
+    width: 96px;
+    min-height: 106px;
     position: relative;
     background: transparent;
     box-shadow: none;
@@ -266,8 +266,8 @@
 
 /* The health ring wrapping the 3D button image */
 .care-btn-ring {
-    width: 72px;
-    height: 72px;
+    width: 82px;
+    height: 82px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -277,8 +277,8 @@
 
 /* The 3D rendered image — mix-blend-mode removes white bg */
 .care-btn-img {
-    width: 60px;
-    height: 60px;
+    width: 69px;
+    height: 69px;
     object-fit: contain;
     border-radius: 50%;
     mix-blend-mode: multiply;

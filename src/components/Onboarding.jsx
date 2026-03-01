@@ -7,16 +7,59 @@ import seedImg from '../assets/sprout_seed.png';
 import buddyImg from '../assets/sprout_buddy.png';
 import './Onboarding.css';
 
+// ── Intro video imports (graceful fallback if not yet present) ──
+let introSeedFall, introGerminate, introEmerge, introAlive;
+try { introSeedFall = new URL('../assets/intro_seed_fall.mp4', import.meta.url).href; } catch (e) { introSeedFall = null; }
+try { introGerminate = new URL('../assets/intro_germinate.mp4', import.meta.url).href; } catch (e) { introGerminate = null; }
+try { introEmerge = new URL('../assets/intro_emerge.mp4', import.meta.url).href; } catch (e) { introEmerge = null; }
+try { introAlive = new URL('../assets/intro_alive.mp4', import.meta.url).href; } catch (e) { introAlive = null; }
+
+// Clip 1: plays before the seed-tap screen
+const OPENING_CLIPS = [
+    introSeedFall && { id: 'fall', src: introSeedFall },
+].filter(Boolean);
+
+// Clips 2-4: play after the user taps the seed + toast
+const GROWTH_CLIPS = [
+    introGerminate && { id: 'germinate', src: introGerminate },
+    introEmerge && { id: 'emerge', src: introEmerge },
+    introAlive && { id: 'alive', src: introAlive },
+].filter(Boolean);
+
+/**
+ * Onboarding Flow:
+ *   intro     → Video 1 (seed falling through darkness)
+ *   drop      → Seed image drops in
+ *   idle      → Seed bobs, waiting for tap
+ *   tapped    → User taps seed → Spark Point toast + "Sprout" logo
+ *   growth    → Videos 2, 3, 4 (germination → emerge → first smile)
+ *   vibe      → Personality picker
+ *   hatch     → Buddy reveal animation
+ *   lockin    → Save your Sprout
+ */
 const Onboarding = ({ onComplete, addPoints }) => {
-    const [step, setStep] = useState('intro'); // intro -> drop -> idle -> tapped -> vibe -> lockin
+    const [step, setStep] = useState(OPENING_CLIPS.length > 0 ? 'intro' : 'drop');
     const [toastMessage, setToastMessage] = useState(null);
 
     // Step 1: Seed drops in
     useEffect(() => {
         if (step === 'drop') {
+            const timer = setTimeout(() => setStep('idle'), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [step]);
+
+    // After tap + toast delay → trigger growth videos
+    useEffect(() => {
+        if (step === 'tapped') {
+            const delay = GROWTH_CLIPS.length > 0 ? 1800 : 2000;
             const timer = setTimeout(() => {
-                setStep('idle');
-            }, 1000);
+                if (GROWTH_CLIPS.length > 0) {
+                    setStep('growth');
+                } else {
+                    setStep('vibe');
+                }
+            }, delay);
             return () => clearTimeout(timer);
         }
     }, [step]);
@@ -28,7 +71,7 @@ const Onboarding = ({ onComplete, addPoints }) => {
         showToast("You've started something good.", 1);
     };
 
-    const handleContinue = () => {
+    const handleGrowthComplete = () => {
         setStep('vibe');
     };
 
@@ -36,10 +79,7 @@ const Onboarding = ({ onComplete, addPoints }) => {
         setStep('hatch');
         addPoints('sprout', 5);
         showToast("Identity Established.", 5);
-
-        setTimeout(() => {
-            setStep('lockin');
-        }, 2500);
+        setTimeout(() => setStep('lockin'), 2500);
     };
 
     const handleLockIn = () => {
@@ -61,12 +101,16 @@ const Onboarding = ({ onComplete, addPoints }) => {
             />
 
             <AnimatePresence mode="wait">
-                {/* Step 0: Cinematic Intro Videos */}
+                {/* ═══ Step 0: Opening cinematic (Video 1) ═══ */}
                 {step === 'intro' && (
-                    <IntroSequence onComplete={() => setStep('drop')} />
+                    <IntroSequence
+                        clips={OPENING_CLIPS}
+                        onComplete={() => setStep('drop')}
+                        skippable={true}
+                    />
                 )}
 
-                {/* Step 1 & 2: Seed Drop, Idle, and Tapped */}
+                {/* ═══ Step 1 & 2: Seed Drop → Idle → Tapped ═══ */}
                 {(step === 'drop' || step === 'idle' || step === 'tapped') && (
                     <motion.div
                         key="seed"
@@ -109,23 +153,30 @@ const Onboarding = ({ onComplete, addPoints }) => {
                             <h1>Sprout: The start of<br />something good.</h1>
                         </motion.div>
 
-                        {/* Continue button shown in tapped state */}
-                        <motion.div
-                            className="continue-action-area"
-                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                            animate={{ opacity: step === 'tapped' ? 1 : 0, scale: step === 'tapped' ? 1 : 0.9, y: step === 'tapped' ? 0 : 20 }}
-                            transition={{ type: "spring", bounce: 0.4, delay: 0.2 }}
-                        >
-                            {step === 'tapped' && (
-                                <Button onClick={handleContinue} className="green-pill-btn">
-                                    Continue
-                                </Button>
-                            )}
-                        </motion.div>
+                        {/* Tapped state — brief moment before growth videos */}
+                        {step === 'tapped' && (
+                            <motion.div
+                                className="tapped-subtitle"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5, duration: 0.6 }}
+                            >
+                                <p>Something is happening...</p>
+                            </motion.div>
+                        )}
                     </motion.div>
                 )}
 
-                {/* Step 3: Vibe Check */}
+                {/* ═══ Step 3: Growth cinematic (Videos 2, 3, 4) ═══ */}
+                {step === 'growth' && (
+                    <IntroSequence
+                        clips={GROWTH_CLIPS}
+                        onComplete={handleGrowthComplete}
+                        skippable={true}
+                    />
+                )}
+
+                {/* ═══ Step 4: Vibe Check ═══ */}
                 {step === 'vibe' && (
                     <motion.div
                         key="vibe"
@@ -144,7 +195,7 @@ const Onboarding = ({ onComplete, addPoints }) => {
                     </motion.div>
                 )}
 
-                {/* Step 4: Hatching & Lock-in */}
+                {/* ═══ Step 5: Hatching & Lock-in ═══ */}
                 {(step === 'hatch' || step === 'lockin') && (
                     <motion.div
                         key="lockin"

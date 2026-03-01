@@ -25,17 +25,23 @@
 }
 
 .home-container.dark-mode .care-btn {
-    background: rgba(0, 0, 0, 0.35);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: linear-gradient(180deg, rgba(40, 40, 40, 0.9) 0%, rgba(30, 30, 30, 0.85) 100%);
+    box-shadow:
+        0 6px 0 0 rgba(0, 0, 0, 0.3),
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .home-container.dark-mode .care-btn-label {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .home-container.dark-mode .details-toggle {
-    background: rgba(0, 0, 0, 0.35);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: linear-gradient(180deg, rgba(40, 40, 40, 0.9) 0%, rgba(30, 30, 30, 0.85) 100%);
+    box-shadow:
+        0 4px 0 0 rgba(0, 0, 0, 0.3),
+        0 6px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
     color: rgba(255, 255, 255, 0.8);
 }
 
@@ -196,11 +202,12 @@
     filter: drop-shadow(0 24px 60px rgba(0, 50, 20, 0.2));
 }
 
-/* ── Mini Stat Orbs ────────────────────────────────────── */
+/* ── Mini Stat Orbs — 3D style ─────────────────────────── */
 .mini-stats {
     display: flex;
-    gap: 16px;
+    gap: 20px;
     justify-content: center;
+    padding: 4px 0;
 }
 
 .mini-stat {
@@ -208,97 +215,182 @@
 }
 
 .mini-stat-ring {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.5s ease;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .mini-stat-emoji {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.92);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 17px;
+    box-shadow:
+        inset 0 -2px 4px rgba(0, 0, 0, 0.06),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* ── Care Buttons ──────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   3D CARE BUTTONS — Spline-inspired extruded depth
+   ══════════════════════════════════════════════════════════ */
 .care-buttons {
     display: flex;
-    gap: 8px;
+    gap: 12px;
     justify-content: center;
-    margin-top: 8px;
+    margin-top: 12px;
+    padding: 4px;
 }
 
 .care-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 10px 8px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 10px 12px;
+    border: none;
+    border-radius: 20px;
     cursor: pointer;
-    width: 68px;
-    min-height: 62px;
-    transition: all 0.2s ease;
+    width: 72px;
+    min-height: 76px;
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    /* 3D depth: bottom edge + ambient shadow */
+    box-shadow:
+        0 6px 0 0 rgba(0, 0, 0, 0.08),
+        0 8px 20px rgba(0, 0, 0, 0.1),
+        0 2px 6px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+    /* Default: warm neutral */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 235, 0.9) 100%);
 }
 
+/* 3D press effect */
 .care-btn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.7);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(40, 80, 20, 0.1);
+    transform: translateY(-3px);
+    box-shadow:
+        0 9px 0 0 rgba(0, 0, 0, 0.07),
+        0 14px 28px rgba(0, 0, 0, 0.12),
+        0 4px 10px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .care-btn:active:not(:disabled) {
-    transform: scale(0.93);
+    transform: translateY(3px);
+    box-shadow:
+        0 1px 0 0 rgba(0, 0, 0, 0.1),
+        0 2px 6px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.06),
+        inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .care-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
+    transform: none;
+}
+
+/* Per-button color theming */
+.care-btn:nth-child(1) {
+    background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
+    box-shadow:
+        0 6px 0 0 #90caf9,
+        0 8px 20px rgba(66, 165, 245, 0.2),
+        0 2px 6px rgba(66, 165, 245, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.care-btn:nth-child(2) {
+    background: linear-gradient(180deg, #fff3e0 0%, #ffe0b2 100%);
+    box-shadow:
+        0 6px 0 0 #ffcc80,
+        0 8px 20px rgba(255, 152, 0, 0.2),
+        0 2px 6px rgba(255, 152, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.care-btn:nth-child(3) {
+    background: linear-gradient(180deg, #fffde7 0%, #fff9c4 100%);
+    box-shadow:
+        0 6px 0 0 #fff176,
+        0 8px 20px rgba(253, 216, 53, 0.2),
+        0 2px 6px rgba(253, 216, 53, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.care-btn:nth-child(4) {
+    background: linear-gradient(180deg, #fce4ec 0%, #f8bbd0 100%);
+    box-shadow:
+        0 6px 0 0 #f48fb1,
+        0 8px 20px rgba(233, 30, 99, 0.15),
+        0 2px 6px rgba(233, 30, 99, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .care-btn-icon {
-    font-size: 24px;
+    font-size: 28px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
 .care-btn-label {
     font-size: 9px;
-    font-weight: 700;
-    color: #4a6a38;
-    letter-spacing: 0.04em;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
-/* ── Details Toggle ────────────────────────────────────── */
+/* ── Details Toggle — 3D style ─────────────────────────── */
 .details-toggle {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 12px 20px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    font-size: 13px;
+    padding: 14px 20px;
+    border-radius: 18px;
+    border: none;
+    font-size: 14px;
     font-weight: 600;
-    color: #4a6a38;
+    color: rgba(0, 0, 0, 0.55);
     cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 8px;
+    margin-top: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 240, 0.85) 100%);
+    box-shadow:
+        0 4px 0 0 rgba(0, 0, 0, 0.05),
+        0 6px 16px rgba(0, 0, 0, 0.06),
+        0 2px 4px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .details-toggle:hover {
-    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+    box-shadow:
+        0 6px 0 0 rgba(0, 0, 0, 0.04),
+        0 10px 24px rgba(0, 0, 0, 0.08),
+        0 3px 8px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.details-toggle:active {
+    transform: translateY(2px);
+    box-shadow:
+        0 1px 0 0 rgba(0, 0, 0, 0.06),
+        0 2px 6px rgba(0, 0, 0, 0.05),
+        inset 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 /* ── Details Panel (expandable) ────────────────────────── */

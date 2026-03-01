@@ -252,57 +252,37 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    width: 80px;
-    min-height: 88px;
+    width: 84px;
+    min-height: 92px;
     position: relative;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
     background: transparent;
     box-shadow: none;
-}
-
-/* 3D press effect */
-.care-btn:hover:not(:disabled) {
-    transform: translateY(-4px) scale(1.05);
-}
-
-.care-btn:active:not(:disabled) {
-    transform: translateY(2px) scale(0.95);
 }
 
 .care-btn:disabled {
     opacity: 0.35;
     cursor: not-allowed;
-    transform: none;
 }
 
 /* The health ring wrapping the 3D button image */
 .care-btn-ring {
-    width: 68px;
-    height: 68px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 4px;
-    transition: all 0.3s ease;
 }
 
-/* The 3D rendered image IS the button */
+/* The 3D rendered image — mix-blend-mode removes white bg */
 .care-btn-img {
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
-    border-radius: 14px;
-    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
-    transition: filter 0.15s ease;
-}
-
-.care-btn:hover:not(:disabled) .care-btn-img {
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
-}
-
-.care-btn:active:not(:disabled) .care-btn-img {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    border-radius: 50%;
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.15));
 }
 
 .care-btn-label {

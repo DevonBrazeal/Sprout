@@ -246,10 +246,10 @@ const Home = ({ points, addPoints }) => {
 
                     {/* Care Buttons with integrated health rings */}
                     <nav className="care-buttons" aria-label="Care actions">
-                        <CareButton img={btnWater} label="WATER" value={engine.stats.water} color="#42a5f5" disabled={!!sproutAction} onClick={() => handleCare('water')} />
-                        <CareButton img={btnFeed} label="FEED" value={engine.stats.food} color="#ff9800" disabled={!!sproutAction} onClick={() => handleCare('feed')} />
-                        <CareButton img={btnSun} label="SUN" value={engine.stats.sunlight} color="#fdd835" disabled={!!sproutAction} onClick={() => handleCare('sun')} />
-                        <CareButton img={btnPet} label="PET" value={engine.stats.happiness} color="#e91e63" disabled={!!sproutAction} onClick={() => handleCare('pet')} />
+                        <CareButton index={0} img={btnWater} label="WATER" value={engine.stats.water} color="#42a5f5" disabled={!!sproutAction} onClick={() => handleCare('water')} />
+                        <CareButton index={1} img={btnFeed} label="FEED" value={engine.stats.food} color="#ff9800" disabled={!!sproutAction} onClick={() => handleCare('feed')} />
+                        <CareButton index={2} img={btnSun} label="SUN" value={engine.stats.sunlight} color="#fdd835" disabled={!!sproutAction} onClick={() => handleCare('sun')} />
+                        <CareButton index={3} img={btnPet} label="PET" value={engine.stats.happiness} color="#e91e63" disabled={!!sproutAction} onClick={() => handleCare('pet')} />
                     </nav>
 
                     {/* Expandable Details Section */}
@@ -423,18 +423,36 @@ function StatBar({ label, value, color, icon }) {
     );
 }
 
-function CareButton({ img, label, value, color, disabled, onClick }) {
+function CareButton({ img, label, value, color, disabled, onClick, index = 0 }) {
     const low = value < 30;
     const ringColor = low ? '#e74c3c' : color;
     return (
-        <button className="care-btn" disabled={disabled} onClick={onClick} title={`${label}: ${Math.round(value)}%`}>
+        <motion.button
+            className="care-btn"
+            disabled={disabled}
+            onClick={onClick}
+            title={`${label}: ${Math.round(value)}%`}
+            animate={{
+                y: [0, -6, 0],
+            }}
+            transition={{
+                y: {
+                    repeat: Infinity,
+                    duration: 2.4,
+                    ease: 'easeInOut',
+                    delay: index * 0.3,
+                },
+            }}
+            whileHover={{ scale: 1.12, y: -8 }}
+            whileTap={{ scale: 0.88, y: 2 }}
+        >
             <div className="care-btn-ring" style={{
                 background: `conic-gradient(${ringColor} ${value * 3.6}deg, rgba(0,0,0,0.06) 0deg)`
             }}>
                 <img src={img} alt={label} className="care-btn-img" />
             </div>
             <span className="care-btn-label">{label}</span>
-        </button>
+        </motion.button>
     );
 }
 

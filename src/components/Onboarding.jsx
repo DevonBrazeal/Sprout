@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Button from './Button';
 import Toast from './Toast';
 import IntroSequence from './IntroSequence';
-import buddyImg from '../assets/sprout_buddy.png';
+import idleVideo from '../assets/sprout_idle.mp4';
 import './Onboarding.css';
 
 // ── Intro video imports (graceful fallback if not yet present) ──
@@ -266,39 +266,89 @@ const Onboarding = ({ onComplete, addPoints }) => {
                     </motion.div>
                 )}
 
-                {/* ═══ Hatching & Lock-in ═══ */}
+                {/* ═══ Apple-Ad Style Reveal ═══ */}
                 {(step === 'hatch' || step === 'lockin') && (
                     <motion.div
                         key="lockin"
-                        className="onboarding-step center-content lockin-bg"
+                        className="onboarding-step reveal-screen"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1 }}
+                        transition={{ duration: 1.2 }}
                     >
-                        <motion.div
-                            className="buddy-image-container"
-                            initial={{ scale: 0, rotate: -10, y: 50 }}
-                            animate={{ scale: 1, rotate: 0, y: 0 }}
-                            transition={{ type: "spring", stiffness: 150, damping: 18 }}
+                        {/* Sprout logo — animates down from top */}
+                        <motion.h1
+                            className="reveal-logo"
+                            initial={{ opacity: 0, y: -40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            <img src={buddyImg} alt="Sprout Buddy" className="buddy-image" />
+                            Sprout
+                        </motion.h1>
+
+                        {/* Idle MP4 playing in a premium showcase container */}
+                        <motion.div
+                            className="reveal-video-container"
+                            initial={{ scale: 0.6, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.1, type: 'spring', stiffness: 100, damping: 18 }}
+                        >
+                            <video
+                                src={idleVideo}
+                                className="reveal-video"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                            />
                         </motion.div>
 
                         {step === 'lockin' && (
-                            <motion.div
-                                className="lockin-actions"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                            >
-                                <h2>Your Bud is born.</h2>
-                                <div className="points-summary">
-                                    <div className="point-badge spark">✨ 1 Spark Point</div>
-                                    <div className="point-badge sprout">🌱 10 Sprout Points</div>
-                                </div>
-                                <Button onClick={handleLockIn} className="green-pill-btn" style={{ width: '100%' }}>
-                                    Save your Sprout
-                                </Button>
-                            </motion.div>
+                            <div className="reveal-bottom">
+                                {/* Apple-style notification badges */}
+                                <motion.div
+                                    className="reveal-badges"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.4 }}
+                                >
+                                    <motion.div
+                                        className="reveal-badge"
+                                        initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        transition={{ delay: 0.5, type: 'spring', stiffness: 150, damping: 18 }}
+                                    >
+                                        <span className="reveal-badge-icon">✦</span>
+                                        <div className="reveal-badge-text">
+                                            <span className="reveal-badge-title">+1 Spark Point</span>
+                                            <span className="reveal-badge-sub">First interaction earned</span>
+                                        </div>
+                                    </motion.div>
+
+                                    <motion.div
+                                        className="reveal-badge"
+                                        initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        transition={{ delay: 0.7, type: 'spring', stiffness: 150, damping: 18 }}
+                                    >
+                                        <span className="reveal-badge-icon sprout-icon">🌱</span>
+                                        <div className="reveal-badge-text">
+                                            <span className="reveal-badge-title">+10 Sprout Points</span>
+                                            <span className="reveal-badge-sub">Identity established</span>
+                                        </div>
+                                    </motion.div>
+                                </motion.div>
+
+                                {/* Premium CTA button */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 1.0, type: 'spring', stiffness: 120, damping: 18 }}
+                                >
+                                    <Button onClick={handleLockIn} className="reveal-cta">
+                                        Begin Your Journey
+                                    </Button>
+                                </motion.div>
+                            </div>
                         )}
                     </motion.div>
                 )}

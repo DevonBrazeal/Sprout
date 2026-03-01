@@ -25,17 +25,19 @@ const FRAMES = {
 };
 
 // Idle behavior sequences with timing (ms)
+// Durations must be longer than CSS crossfade (400ms) so each frame
+// fully resolves before the next one starts blending in.
 const IDLE_SEQUENCES = [
-    // Simple blink
-    { frames: ['blink'], durations: [150], weight: 4 },
+    // Simple blink — quick close + open
+    { frames: ['blink', 'idle'], durations: [450, 0], weight: 5 },
     // Double blink
-    { frames: ['blink', 'idle', 'blink'], durations: [120, 100, 120], weight: 2 },
-    // Playful wink — hold it for a beat
-    { frames: ['wink'], durations: [600], weight: 1 },
-    // Quick happy flash
-    { frames: ['happy', 'idle'], durations: [800, 0], weight: 1 },
-    // Sleepy then wake up
-    { frames: ['sleepy', 'blink', 'idle'], durations: [1200, 200, 0], weight: 1 },
+    { frames: ['blink', 'idle', 'blink', 'idle'], durations: [400, 500, 400, 0], weight: 2 },
+    // Playful wink — hold it longer so user notices it
+    { frames: ['wink', 'idle'], durations: [1200, 0], weight: 1 },
+    // Happy flash — gentle buildup
+    { frames: ['happy', 'idle'], durations: [1400, 0], weight: 1 },
+    // Sleepy yawn then wake
+    { frames: ['sleepy', 'idle'], durations: [1800, 0], weight: 1 },
 ];
 
 // Weighted random selection
@@ -92,7 +94,7 @@ const SproutCharacter = ({ state = 'thriving', size = 300, action = null, onActi
         if (state !== 'thriving') return;
 
         const scheduleIdle = () => {
-            const delay = 2000 + Math.random() * 3000; // 2-5 seconds
+            const delay = 3500 + Math.random() * 4000; // 3.5-7.5 seconds — less frantic
             idleTimerRef.current = setTimeout(() => {
                 if (!isPlayingSequence) {
                     const seq = pickIdleSequence();
@@ -121,60 +123,62 @@ const SproutCharacter = ({ state = 'thriving', size = 300, action = null, onActi
         clearTimeout(idleTimerRef.current);
         clearTimeout(sequenceTimerRef.current);
 
+        // All durations are >= 500ms so the 400ms CSS crossfade
+        // can fully blend before the next frame starts.
         switch (action) {
             case 'feed':
                 playSequence(
-                    ['eating', 'happy', 'celebrate', 'happy', 'idle'],
-                    [800, 600, 1200, 400, 0],
+                    ['eating', 'idle', 'happy', 'idle'],
+                    [1200, 500, 1000, 0],
                     onActionComplete
                 );
                 break;
             case 'water':
                 playSequence(
-                    ['blink', 'happy', 'wink', 'idle'],
-                    [200, 600, 500, 0],
+                    ['blink', 'idle', 'happy', 'idle'],
+                    [500, 500, 1000, 0],
                     onActionComplete
                 );
                 break;
             case 'sun':
                 playSequence(
-                    ['happy', 'celebrate', 'happy', 'idle'],
-                    [600, 800, 400, 0],
+                    ['happy', 'idle', 'celebrate', 'idle'],
+                    [1000, 500, 1200, 0],
                     onActionComplete
                 );
                 break;
             case 'pet':
                 playSequence(
-                    ['blink', 'happy', 'wink', 'happy', 'idle'],
-                    [200, 500, 600, 400, 0],
+                    ['blink', 'idle', 'happy', 'wink', 'idle'],
+                    [500, 500, 800, 1000, 0],
                     onActionComplete
                 );
                 break;
             case 'complete':
                 playSequence(
-                    ['eating', 'happy', 'celebrate', 'happy', 'idle'],
-                    [400, 400, 1000, 400, 0],
+                    ['happy', 'idle', 'celebrate', 'happy', 'idle'],
+                    [800, 500, 1200, 800, 0],
                     onActionComplete
                 );
                 break;
             case 'quest':
                 playSequence(
-                    ['happy', 'celebrate', 'happy', 'celebrate', 'happy', 'idle'],
-                    [300, 800, 300, 800, 400, 0],
+                    ['happy', 'celebrate', 'idle', 'celebrate', 'happy', 'idle'],
+                    [600, 1200, 500, 1200, 800, 0],
                     onActionComplete
                 );
                 break;
             case 'celebrate':
                 playSequence(
-                    ['happy', 'celebrate', 'happy', 'celebrate', 'idle'],
-                    [400, 1000, 300, 800, 0],
+                    ['happy', 'celebrate', 'idle', 'celebrate', 'idle'],
+                    [600, 1200, 500, 1200, 0],
                     onActionComplete
                 );
                 break;
             case 'sunlight':
                 playSequence(
-                    ['happy', 'celebrate', 'idle'],
-                    [600, 1000, 0],
+                    ['happy', 'idle', 'celebrate', 'idle'],
+                    [800, 500, 1200, 0],
                     onActionComplete
                 );
                 break;
@@ -205,8 +209,8 @@ const SproutCharacter = ({ state = 'thriving', size = 300, action = null, onActi
         if (isPlayingSequence || state !== 'thriving') return;
         clearTimeout(idleTimerRef.current);
         playSequence(
-            ['blink', 'happy', 'wink', 'idle'],
-            [150, 500, 500, 0],
+            ['blink', 'idle', 'happy', 'wink', 'idle'],
+            [500, 500, 800, 1000, 0],
             () => { }
         );
     };

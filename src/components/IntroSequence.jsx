@@ -51,7 +51,7 @@ const IntroSequence = ({ clips = [], onComplete, skippable = true }) => {
     };
 
     return (
-        <div className="intro-sequence" onClick={handleSkip}>
+        <div className="intro-sequence" onClick={skippable ? handleSkip : undefined}>
             <AnimatePresence mode="wait">
                 <motion.div
                     key={clips[currentClip].id}

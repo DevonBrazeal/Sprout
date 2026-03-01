@@ -184,7 +184,7 @@ const Onboarding = ({ onComplete, addPoints }) => {
                     <IntroSequence
                         clips={GROWTH_CLIPS}
                         onComplete={handleGrowthComplete}
-                        skippable={true}
+                        skippable={false}
                     />
                 )}
 

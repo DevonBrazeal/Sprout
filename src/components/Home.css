@@ -275,13 +275,25 @@
     transform: none;
 }
 
+/* The health ring wrapping the 3D button image */
+.care-btn-ring {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    transition: all 0.3s ease;
+}
+
 /* The 3D rendered image IS the button */
 .care-btn-img {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     object-fit: contain;
-    border-radius: 16px;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    border-radius: 14px;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
     transition: filter 0.15s ease;
 }
 

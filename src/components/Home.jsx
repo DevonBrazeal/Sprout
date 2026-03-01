@@ -242,22 +242,14 @@ const Home = ({ points, addPoints }) => {
                                 onActionComplete={() => setSproutAction(null)}
                             />
                         </div>
-
-                        {/* Mini stat orbs below sprout */}
-                        <div className="mini-stats">
-                            <MiniStat img={btnWater} value={engine.stats.water} color="#42a5f5" />
-                            <MiniStat img={btnFeed} value={engine.stats.food} color="#ff9800" />
-                            <MiniStat img={btnSun} value={engine.stats.sunlight} color="#fdd835" />
-                            <MiniStat img={btnPet} value={engine.stats.happiness} color="#e91e63" />
-                        </div>
                     </section>
 
-                    {/* Care Action Buttons - floating at bottom of hero */}
+                    {/* Care Buttons with integrated health rings */}
                     <nav className="care-buttons" aria-label="Care actions">
-                        <CareButton img={btnWater} label="WATER" disabled={!!sproutAction} onClick={() => handleCare('water')} />
-                        <CareButton img={btnFeed} label="FEED" disabled={!!sproutAction} onClick={() => handleCare('feed')} />
-                        <CareButton img={btnSun} label="SUN" disabled={!!sproutAction} onClick={() => handleCare('sun')} />
-                        <CareButton img={btnPet} label="PET" disabled={!!sproutAction} onClick={() => handleCare('pet')} />
+                        <CareButton img={btnWater} label="WATER" value={engine.stats.water} color="#42a5f5" disabled={!!sproutAction} onClick={() => handleCare('water')} />
+                        <CareButton img={btnFeed} label="FEED" value={engine.stats.food} color="#ff9800" disabled={!!sproutAction} onClick={() => handleCare('feed')} />
+                        <CareButton img={btnSun} label="SUN" value={engine.stats.sunlight} color="#fdd835" disabled={!!sproutAction} onClick={() => handleCare('sun')} />
+                        <CareButton img={btnPet} label="PET" value={engine.stats.happiness} color="#e91e63" disabled={!!sproutAction} onClick={() => handleCare('pet')} />
                     </nav>
 
                     {/* Expandable Details Section */}
@@ -431,10 +423,16 @@ function StatBar({ label, value, color, icon }) {
     );
 }
 
-function CareButton({ img, label, disabled, onClick }) {
+function CareButton({ img, label, value, color, disabled, onClick }) {
+    const low = value < 30;
+    const ringColor = low ? '#e74c3c' : color;
     return (
-        <button className="care-btn" disabled={disabled} onClick={onClick}>
-            <img src={img} alt={label} className="care-btn-img" />
+        <button className="care-btn" disabled={disabled} onClick={onClick} title={`${label}: ${Math.round(value)}%`}>
+            <div className="care-btn-ring" style={{
+                background: `conic-gradient(${ringColor} ${value * 3.6}deg, rgba(0,0,0,0.06) 0deg)`
+            }}>
+                <img src={img} alt={label} className="care-btn-img" />
+            </div>
             <span className="care-btn-label">{label}</span>
         </button>
     );

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from './Button';
 import Toast from './Toast';
 import IntroSequence from './IntroSequence';
-import seedImg from '../assets/sprout_seed.png';
 import buddyImg from '../assets/sprout_buddy.png';
 import './Onboarding.css';
 
@@ -14,12 +13,7 @@ try { introGerminate = new URL('../assets/intro_germinate.mp4', import.meta.url)
 try { introEmerge = new URL('../assets/intro_emerge.mp4', import.meta.url).href; } catch (e) { introEmerge = null; }
 try { introAlive = new URL('../assets/intro_alive.mp4', import.meta.url).href; } catch (e) { introAlive = null; }
 
-// Clip 1: plays before the seed-tap screen
-const OPENING_CLIPS = [
-    introSeedFall && { id: 'fall', src: introSeedFall },
-].filter(Boolean);
-
-// Clips 2-4: play after the user taps the seed + toast
+// Clips 2-4: play after the user taps the seed
 const GROWTH_CLIPS = [
     introGerminate && { id: 'germinate', src: introGerminate },
     introEmerge && { id: 'emerge', src: introEmerge },
@@ -28,48 +22,51 @@ const GROWTH_CLIPS = [
 
 /**
  * Onboarding Flow:
- *   intro     → Video 1 (seed falling through darkness)
- *   drop      → Seed image drops in
- *   idle      → Seed bobs, waiting for tap
- *   tapped    → User taps seed → Spark Point toast + "Sprout" logo
- *   growth    → Videos 2, 3, 4 (germination → emerge → first smile)
- *   vibe      → Personality picker
- *   hatch     → Buddy reveal animation
- *   lockin    → Save your Sprout
+ *   intro      → Video 1 plays (seed falls through darkness)
+ *   waitForTap → Video 1 frozen on last frame, "Tap Seed" overlay
+ *   tapped     → Spark Point toast + brief pause
+ *   growth     → Videos 2, 3, 4 (germination → emerge → first breath)
+ *   vibe       → Personality picker
+ *   hatch      → Buddy reveal animation
+ *   lockin     → Save your Sprout
  */
 const Onboarding = ({ onComplete, addPoints }) => {
-    const [step, setStep] = useState(OPENING_CLIPS.length > 0 ? 'intro' : 'drop');
+    const [step, setStep] = useState(introSeedFall ? 'intro' : 'vibe');
     const [toastMessage, setToastMessage] = useState(null);
+    const [showTapHint, setShowTapHint] = useState(false);
+    const videoRef = useRef(null);
+    const tapHintTimer = useRef(null);
 
-    // Step 1: Seed drops in
-    useEffect(() => {
-        if (step === 'drop') {
-            const timer = setTimeout(() => setStep('idle'), 1000);
-            return () => clearTimeout(timer);
-        }
-    }, [step]);
+    // When Video 1 ends, freeze and show tap overlay
+    const handleVideo1End = () => {
+        setStep('waitForTap');
+        // Show "Tap Seed" after a brief moment
+        tapHintTimer.current = setTimeout(() => setShowTapHint(true), 600);
+    };
 
-    // After tap + toast delay → trigger growth videos
+    // User taps the seed on the frozen frame
+    const handleSeedTap = () => {
+        if (step !== 'waitForTap') return;
+        clearTimeout(tapHintTimer.current);
+        setShowTapHint(false);
+        setStep('tapped');
+        addPoints('spark', 1);
+        showToast("You've started something good.", 1);
+    };
+
+    // After tap + toast, start growth videos
     useEffect(() => {
         if (step === 'tapped') {
-            const delay = GROWTH_CLIPS.length > 0 ? 1800 : 2000;
             const timer = setTimeout(() => {
                 if (GROWTH_CLIPS.length > 0) {
                     setStep('growth');
                 } else {
                     setStep('vibe');
                 }
-            }, delay);
+            }, 1800);
             return () => clearTimeout(timer);
         }
     }, [step]);
-
-    const handleSeedTap = () => {
-        if (step !== 'idle') return;
-        setStep('tapped');
-        addPoints('spark', 1);
-        showToast("You've started something good.", 1);
-    };
 
     const handleGrowthComplete = () => {
         setStep('vibe');
@@ -101,73 +98,88 @@ const Onboarding = ({ onComplete, addPoints }) => {
             />
 
             <AnimatePresence mode="wait">
-                {/* ═══ Step 0: Opening cinematic (Video 1) ═══ */}
-                {step === 'intro' && (
-                    <IntroSequence
-                        clips={OPENING_CLIPS}
-                        onComplete={() => setStep('drop')}
-                        skippable={true}
-                    />
-                )}
-
-                {/* ═══ Step 1 & 2: Seed Drop → Idle → Tapped ═══ */}
-                {(step === 'drop' || step === 'idle' || step === 'tapped') && (
+                {/* ═══ Video 1: Seed Falls Through Darkness ═══ */}
+                {(step === 'intro' || step === 'waitForTap' || step === 'tapped') && (
                     <motion.div
-                        key="seed"
-                        className="onboarding-step center-content"
+                        key="video1-phase"
+                        className="onboarding-step video-phase"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, filter: "blur(10px)", transition: { duration: 0.5 } }}
+                        exit={{ opacity: 0, transition: { duration: 0.8 } }}
                     >
-                        {/* Logo text shown in tapped state */}
-                        <motion.div
-                            className="tapped-logo-area"
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: step === 'tapped' ? 1 : 0, y: step === 'tapped' ? 0 : -20 }}
-                            transition={{ duration: 0.4 }}
-                        >
-                            <h2 className="tapped-sprout-logo">Sprout</h2>
-                        </motion.div>
+                        {/* The video — plays once, freezes on last frame */}
+                        <video
+                            ref={videoRef}
+                            src={introSeedFall}
+                            className="intro-fullscreen-video"
+                            autoPlay
+                            muted
+                            playsInline
+                            onEnded={handleVideo1End}
+                        />
 
-                        <motion.div
-                            className={`seed-image-container ${step === 'tapped' ? 'tapped-glow' : ''}`}
-                            initial={{ scale: 0.8 }}
-                            animate={{
-                                scale: step === 'idle' ? 1 : (step === 'tapped' ? 1.05 : 0.8),
-                                y: step === 'idle' ? [0, -5, 0] : 0
-                            }}
-                            transition={step === 'idle' ? { repeat: Infinity, duration: 4, ease: "easeInOut" } : { type: 'spring', damping: 20 }}
-                            onClick={handleSeedTap}
-                            whileTap={step === 'idle' ? { scale: 0.95 } : {}}
-                        >
-                            <img src={seedImg} alt="Glowing Seed" className="seed-image" />
-                        </motion.div>
+                        {/* "Tap Seed" overlay — appears after Video 1 ends */}
+                        <AnimatePresence>
+                            {step === 'waitForTap' && (
+                                <motion.div
+                                    className="tap-seed-overlay"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    onClick={handleSeedTap}
+                                >
+                                    {/* Pulsing ring around where the seed landed */}
+                                    <motion.div
+                                        className="tap-seed-ring"
+                                        animate={{
+                                            scale: [1, 1.2, 1],
+                                            opacity: [0.6, 0.2, 0.6],
+                                        }}
+                                        transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                                    />
 
-                        {/* Intro text shown in drop/idle state */}
-                        <motion.div
-                            className="intro-text-area"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: (step === 'idle' || step === 'drop') ? 1 : 0, y: (step === 'idle' || step === 'drop') ? 0 : 10 }}
-                            transition={{ delay: 0.5, duration: 0.8 }}
-                        >
-                            <h1>Sprout: The start of<br />something good.</h1>
-                        </motion.div>
+                                    {/* Tap hint text */}
+                                    <AnimatePresence>
+                                        {showTapHint && (
+                                            <motion.p
+                                                className="tap-seed-text"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.5 }}
+                                            >
+                                                Tap the Seed
+                                            </motion.p>
+                                        )}
+                                    </AnimatePresence>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
 
-                        {/* Tapped state — brief moment before growth videos */}
-                        {step === 'tapped' && (
-                            <motion.div
-                                className="tapped-subtitle"
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5, duration: 0.6 }}
-                            >
-                                <p>Something is happening...</p>
-                            </motion.div>
-                        )}
+                        {/* "Something is happening..." after tap */}
+                        <AnimatePresence>
+                            {step === 'tapped' && (
+                                <motion.div
+                                    className="tapped-message-overlay"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <motion.p
+                                        className="tapped-happening-text"
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: 0.3, duration: 0.6 }}
+                                    >
+                                        Something is happening...
+                                    </motion.p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </motion.div>
                 )}
 
-                {/* ═══ Step 3: Growth cinematic (Videos 2, 3, 4) ═══ */}
+                {/* ═══ Growth cinematic (Videos 2, 3, 4) ═══ */}
                 {step === 'growth' && (
                     <IntroSequence
                         clips={GROWTH_CLIPS}
@@ -176,7 +188,7 @@ const Onboarding = ({ onComplete, addPoints }) => {
                     />
                 )}
 
-                {/* ═══ Step 4: Vibe Check ═══ */}
+                {/* ═══ Vibe Check ═══ */}
                 {step === 'vibe' && (
                     <motion.div
                         key="vibe"
@@ -195,7 +207,7 @@ const Onboarding = ({ onComplete, addPoints }) => {
                     </motion.div>
                 )}
 
-                {/* ═══ Step 5: Hatching & Lock-in ═══ */}
+                {/* ═══ Hatching & Lock-in ═══ */}
                 {(step === 'hatch' || step === 'lockin') && (
                     <motion.div
                         key="lockin"

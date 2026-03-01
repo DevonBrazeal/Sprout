@@ -29,76 +29,72 @@
     text-align: center;
 }
 
-.tapped-logo-area {
+/* ── Full-screen video phase ───────────────────────────── */
+.video-phase {
+    padding: 0;
+}
+
+.intro-fullscreen-video {
     position: absolute;
-    top: 15%;
+    inset: 0;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.tapped-sprout-logo {
-    font-size: var(--text-2xl);
-    font-weight: 700;
-    color: var(--color-white);
-    opacity: 0.5;
-    /* Faded back in the tapped state */
-}
-
-.seed-image-container {
-    width: 220px;
-    height: 220px;
+/* ── Tap Seed overlay (after Video 1 ends) ─────────────── */
+.tap-seed-overlay {
+    position: absolute;
+    inset: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 10;
-    position: relative;
+    z-index: 20;
 }
 
-/* Base glowing effect behind the seed image */
-.seed-image-container::before {
-    content: '';
+.tap-seed-ring {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 2px solid rgba(180, 230, 150, 0.5);
+    box-shadow:
+        0 0 40px rgba(100, 200, 100, 0.15),
+        inset 0 0 30px rgba(100, 200, 100, 0.08);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 140%;
-    height: 140%;
-    background: radial-gradient(circle, rgba(230, 230, 200, 0.1) 0%, rgba(130, 200, 100, 0.05) 40%, transparent 70%);
-    border-radius: 50%;
-    z-index: -1;
-    pointer-events: none;
 }
 
-.tapped-glow::before {
-    background: radial-gradient(circle, rgba(100, 250, 150, 0.2) 0%, rgba(50, 200, 100, 0.1) 50%, transparent 80%);
-}
-
-.seed-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    mix-blend-mode: screen;
-}
-
-.intro-text-area {
-    margin-top: var(--space-4);
-    width: 100%;
-}
-
-.intro-text-area h1 {
-    font-size: var(--text-2xl);
-    font-weight: 500;
-    /* Thinner weight to match mockup */
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-}
-
-.continue-action-area {
+.tap-seed-text {
     position: absolute;
-    bottom: 15%;
-    width: 100%;
+    bottom: 28%;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* ── "Something is happening..." overlay ───────────────── */
+.tapped-message-overlay {
+    position: absolute;
+    inset: 0;
     display: flex;
+    align-items: center;
     justify-content: center;
+    z-index: 20;
+}
+
+.tapped-happening-text {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* The distinct green pill button from image 2 */

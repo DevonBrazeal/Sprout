@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from './Button';
 import Toast from './Toast';
+import IntroSequence from './IntroSequence';
 import seedImg from '../assets/sprout_seed.png';
 import buddyImg from '../assets/sprout_buddy.png';
 import './Onboarding.css';
 
 const Onboarding = ({ onComplete, addPoints }) => {
-    const [step, setStep] = useState('drop'); // drop -> idle -> tapped -> vibe -> lockin
+    const [step, setStep] = useState('intro'); // intro -> drop -> idle -> tapped -> vibe -> lockin
     const [toastMessage, setToastMessage] = useState(null);
 
     // Step 1: Seed drops in
@@ -60,6 +61,11 @@ const Onboarding = ({ onComplete, addPoints }) => {
             />
 
             <AnimatePresence mode="wait">
+                {/* Step 0: Cinematic Intro Videos */}
+                {step === 'intro' && (
+                    <IntroSequence onComplete={() => setStep('drop')} />
+                )}
+
                 {/* Step 1 & 2: Seed Drop, Idle, and Tapped */}
                 {(step === 'drop' || step === 'idle' || step === 'tapped') && (
                     <motion.div

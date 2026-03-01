@@ -1,15 +1,17 @@
-/* SproutCharacter.css — Frame-based sprite animation */
+/* SproutCharacter.css — Video-based animation player */
 
 /* ========== Stage Container ========== */
 .sprout-stage {
     position: relative;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    margin: 0;
+    border: none;
+    background: none;
 }
 
 .sprout-stage:focus-visible {
@@ -18,31 +20,19 @@
     border-radius: 50%;
 }
 
-/* ========== Body Container (handles breathing motion) ========== */
-.sprout-body-container {
+/* ========== Video Stack ========== */
+/* All 8 videos stacked on top of each other.
+   Only the active one gets opacity:1 — the rest stay at 0.
+   The CSS transition creates the crossfade effect. */
+.sprout-video-stack {
     position: relative;
     width: 100%;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform-origin: center bottom;
-    will-change: transform;
-}
-
-/* ========== Frame Stack ========== */
-/* All 8 frames are stacked on top of each other.
-   Only the active frame gets opacity:1 — the rest stay at 0.
-   The transition property creates the crossfade effect. */
-.sprout-frame-stack {
-    position: relative;
-    width: 88%;
     aspect-ratio: 1;
     border-radius: 50%;
     overflow: hidden;
 }
 
-.sprout-frame {
+.sprout-video {
     position: absolute;
     top: 0;
     left: 0;
@@ -50,12 +40,12 @@
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
     pointer-events: none;
     will-change: opacity;
 }
 
-.sprout-frame.active {
+.sprout-video.active {
     opacity: 1;
 }
 
@@ -80,56 +70,19 @@
         0 16px 32px rgba(0, 0, 0, 0.25);
 }
 
-/* ========== State Overrides ========== */
-.sprout-stage.stubborn .sprout-frame-stack {
-    filter: saturate(0.4) brightness(0.8);
-}
-
-.sprout-stage.stubborn .sprout-glow-ring {
-    border-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-.sprout-stage.fading .sprout-frame-stack {
-    filter: grayscale(0.8) brightness(0.5) blur(1px);
-}
-
-.sprout-stage.fading .sprout-glow-ring {
-    border-color: transparent;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.sprout-stage.fading {
-    opacity: 0.6;
-}
-
-/* ========== Ground Shadow ========== */
-.sprout-shadow {
-    width: 55%;
-    height: 8px;
-    margin-top: 8px;
-    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.5) 0%, transparent 70%);
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
 /* ========== Hover effect ========== */
-.sprout-stage:hover .sprout-body-container {
+.sprout-stage:hover .sprout-video-stack {
     filter: brightness(1.05);
 }
 
-.sprout-stage:active .sprout-body-container {
+.sprout-stage:active .sprout-video-stack {
     transform: scale(0.96);
     transition: transform 0.1s ease;
 }
 
 /* ========== Accessibility ========== */
 @media (prefers-reduced-motion: reduce) {
-    .sprout-frame {
+    .sprout-video {
         transition: opacity 0.01ms !important;
-    }
-
-    .sprout-body-container {
-        animation: none !important;
     }
 }

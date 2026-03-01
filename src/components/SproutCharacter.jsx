@@ -129,10 +129,38 @@ const SproutCharacter = ({ state = 'thriving', size = 300, action = null, onActi
                     onActionComplete
                 );
                 break;
+            case 'water':
+                playSequence(
+                    ['blink', 'happy', 'wink', 'idle'],
+                    [200, 600, 500, 0],
+                    onActionComplete
+                );
+                break;
+            case 'sun':
+                playSequence(
+                    ['happy', 'celebrate', 'happy', 'idle'],
+                    [600, 800, 400, 0],
+                    onActionComplete
+                );
+                break;
             case 'pet':
                 playSequence(
                     ['blink', 'happy', 'wink', 'happy', 'idle'],
                     [200, 500, 600, 400, 0],
+                    onActionComplete
+                );
+                break;
+            case 'complete':
+                playSequence(
+                    ['eating', 'happy', 'celebrate', 'happy', 'idle'],
+                    [400, 400, 1000, 400, 0],
+                    onActionComplete
+                );
+                break;
+            case 'quest':
+                playSequence(
+                    ['happy', 'celebrate', 'happy', 'celebrate', 'happy', 'idle'],
+                    [300, 800, 300, 800, 400, 0],
                     onActionComplete
                 );
                 break;
@@ -153,7 +181,7 @@ const SproutCharacter = ({ state = 'thriving', size = 300, action = null, onActi
             default:
                 onActionComplete();
         }
-    }, [action]);
+    }, [action, onActionComplete, playSequence]);
 
     // --- State-based frame override ---
     useEffect(() => {

@@ -1,4 +1,4 @@
-/* Home.css */
+/* Home.css — Redesigned hero-first layout */
 
 .home-container {
     display: flex;
@@ -8,9 +8,78 @@
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
-    background: radial-gradient(ellipse 120% 80% at 30% 20%, rgba(180, 220, 150, 0.6) 0%, transparent 60%),
-        radial-gradient(ellipse 100% 60% at 70% 80%, rgba(200, 235, 180, 0.5) 0%, transparent 50%),
-        linear-gradient(180deg, #c8e6b0 0%, #d4edc4 20%, #e2f0d8 40%, #eaf5e0 60%, #f0f4e6 80%, #f8f6ee 100%);
+    transition: background 0.8s ease;
+}
+
+/* ── Dark mode text overrides ─────────────────────────── */
+.home-container.dark-mode .speech-bubble {
+    background: rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.home-container.dark-mode .hero-level-badge {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.home-container.dark-mode .care-btn {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.home-container.dark-mode .care-btn-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.home-container.dark-mode .details-toggle {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.home-container.dark-mode .stats-panel,
+.home-container.dark-mode .habits-panel,
+.home-container.dark-mode .habit-card {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.home-container.dark-mode .stats-title,
+.home-container.dark-mode .habits-title,
+.home-container.dark-mode .stat-label,
+.home-container.dark-mode .stat-value,
+.home-container.dark-mode .habit-row-name,
+.home-container.dark-mode .habits-progress,
+.home-container.dark-mode .habit-title {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.home-container.dark-mode .stats-hint,
+.home-container.dark-mode .habit-row-meta,
+.home-container.dark-mode .habit-label {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.home-container.dark-mode .habit-row {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.home-container.dark-mode .stat-bar-bg {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.home-container.dark-mode .bg-picker-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.home-container.dark-mode .mini-stat-emoji {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .layout-fade-in {
@@ -29,32 +98,73 @@
     }
 }
 
-/* ── Companion Area ────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   HERO ZONE — Sprout takes center stage
+   ══════════════════════════════════════════════════════════ */
 .companion-area {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--space-2, 16px) var(--space-4, 16px) 120px;
-    gap: var(--space-3, 16px);
+    padding: 0 var(--space-4, 16px) 120px;
+    gap: var(--space-2, 8px);
     max-width: 520px;
     margin: 0 auto;
     width: 100%;
 }
 
-/* ── Level Badge ───────────────────────────────────────── */
-.level-badge {
+.hero-zone {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-2, 8px) 0;
+    gap: var(--space-2, 8px);
+}
+
+/* ── Level Badge — floats top left of hero ─────────────── */
+.hero-level-badge {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    z-index: 10;
     display: inline-flex;
-    padding: 4px 16px;
+    padding: 4px 14px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     font-size: 11px;
     font-weight: 700;
-    color: #4a7a30;
+    color: var(--color-sprout-dark, #4a7a30);
     letter-spacing: 0.05em;
     text-transform: uppercase;
+}
+
+/* ── Background Picker Button — top right ──────────────── */
+.bg-picker-btn {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--color-sprout-dark, #4a7a30);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.bg-picker-btn:hover {
+    background: rgba(255, 255, 255, 0.75);
+    transform: scale(1.08);
 }
 
 /* ── Speech Bubble ─────────────────────────────────────── */
@@ -70,17 +180,134 @@
     border: 1px solid rgba(255, 255, 255, 0.5);
     max-width: 320px;
     text-align: center;
+    z-index: 5;
+    margin-top: 40px;
 }
 
-/* ── Sprout Container ──────────────────────────────────── */
-.central-buddy-container {
-    width: 320px;
-    height: 340px;
+/* ── Hero Sprout Container — LARGE and centered ─────────── */
+.hero-sprout-container {
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 5;
-    filter: drop-shadow(0 24px 40px rgba(0, 50, 20, 0.15));
+    filter: drop-shadow(0 24px 60px rgba(0, 50, 20, 0.2));
+}
+
+/* ── Mini Stat Orbs ────────────────────────────────────── */
+.mini-stats {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.mini-stat {
+    position: relative;
+}
+
+.mini-stat-ring {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+}
+
+.mini-stat-emoji {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+/* ── Care Buttons ──────────────────────────────────────── */
+.care-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.care-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    width: 68px;
+    min-height: 62px;
+    transition: all 0.2s ease;
+}
+
+.care-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(40, 80, 20, 0.1);
+}
+
+.care-btn:active:not(:disabled) {
+    transform: scale(0.93);
+}
+
+.care-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.care-btn-icon {
+    font-size: 24px;
+}
+
+.care-btn-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: #4a6a38;
+    letter-spacing: 0.04em;
+}
+
+/* ── Details Toggle ────────────────────────────────────── */
+.details-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a6a38;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+.details-toggle:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Details Panel (expandable) ────────────────────────── */
+.details-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3, 16px);
+    overflow: hidden;
 }
 
 /* ── Stats Panel ───────────────────────────────────────── */
@@ -174,63 +401,6 @@
     height: 100%;
     border-radius: 4px;
     transition: width 0.5s ease;
-}
-
-/* ── Care Buttons ──────────────────────────────────────── */
-.care-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-}
-
-.care-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 10px 8px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    cursor: pointer;
-    width: 68px;
-    min-height: 62px;
-    transition: all 0.2s ease;
-}
-
-.care-btn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.7);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(40, 80, 20, 0.1);
-}
-
-.care-btn:active:not(:disabled) {
-    transform: scale(0.93);
-}
-
-.care-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.care-btn-icon {
-    font-size: 24px;
-}
-
-.care-btn-label {
-    font-size: 9px;
-    font-weight: 700;
-    color: #4a6a38;
-    letter-spacing: 0.04em;
-}
-
-.care-hint {
-    text-align: center;
-    font-size: 11px;
-    color: #8a9a78;
-    font-weight: 500;
-    margin: 0;
 }
 
 /* ── Habits Panel ──────────────────────────────────────── */
@@ -393,13 +563,113 @@
     justify-content: center;
 }
 
+/* ══════════════════════════════════════════════════════════
+   BACKGROUND PICKER
+   ══════════════════════════════════════════════════════════ */
+.bg-picker-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.bg-picker-sheet {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(24px);
+    border-radius: 24px 24px 0 0;
+    padding: 20px 20px 40px;
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.15);
+}
+
+.bg-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.bg-picker-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.bg-picker-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.bg-picker-close:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.bg-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.bg-option {
+    aspect-ratio: 1;
+    border-radius: 16px;
+    border: 3px solid transparent;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bg-option:hover {
+    transform: scale(1.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.bg-option.active {
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 2px #34C759, 0 4px 16px rgba(52, 199, 89, 0.3);
+}
+
+.bg-option-emoji {
+    font-size: 24px;
+}
+
+.bg-option-name {
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    line-height: 1.1;
+}
+
 /* ── Accessibility ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
     .layout-fade-in {
         animation: none;
     }
 
-    .speech-bubble {
+    .speech-bubble,
+    .home-container {
         transition: none;
     }
 }

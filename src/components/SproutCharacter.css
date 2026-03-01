@@ -1,7 +1,7 @@
-/* SproutCharacter.css — Layered Character Compositing */
+/* SproutCharacter.css — Frame-based sprite animation */
 
-/* ========== Stage ========== */
-.sprout-pet-stage {
+/* ========== Stage Container ========== */
+.sprout-stage {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -12,17 +12,17 @@
     user-select: none;
 }
 
-.sprout-pet-stage:focus-visible {
+.sprout-stage:focus-visible {
     outline: 3px solid var(--color-sprout-green, #34C759);
     outline-offset: 8px;
     border-radius: 50%;
 }
 
-/* ========== Body Motion Container ========== */
-.sprout-body {
+/* ========== Body Container (handles breathing motion) ========== */
+.sprout-body-container {
     position: relative;
     width: 100%;
-    height: 90%;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,100 +30,82 @@
     will-change: transform;
 }
 
-/* ========== Image Frame ========== */
-.sprout-image-frame {
+/* ========== Frame Stack ========== */
+/* All 8 frames are stacked on top of each other.
+   Only the active frame gets opacity:1 — the rest stay at 0.
+   The transition property creates the crossfade effect. */
+.sprout-frame-stack {
     position: relative;
-    width: 85%;
-    height: 85%;
+    width: 88%;
+    aspect-ratio: 1;
     border-radius: 50%;
     overflow: hidden;
-    /* Premium glow ring */
-    box-shadow:
-        0 0 40px rgba(52, 199, 89, 0.3),
-        0 0 80px rgba(52, 199, 89, 0.1),
-        0 20px 40px rgba(0, 0, 0, 0.3);
-    border: 3px solid rgba(52, 199, 89, 0.4);
-    transition: box-shadow 1s ease, border-color 1s ease;
 }
 
-.state-stubborn .sprout-image-frame {
-    box-shadow:
-        0 0 20px rgba(0, 0, 0, 0.2),
-        0 10px 30px rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.05);
-}
-
-.state-fading .sprout-image-frame {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    border-color: transparent;
-    opacity: 0.5;
-}
-
-/* ========== Base Image ========== */
-.sprout-base-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: filter 1s ease;
-}
-
-.state-stubborn .sprout-base-image {
-    filter: saturate(0.3) brightness(0.7);
-}
-
-.state-fading .sprout-base-image {
-    filter: grayscale(1) brightness(0.4) blur(2px);
-}
-
-/* ========== SVG Face Overlay ========== */
-/*
- * This is the KEY compositing trick: the SVG sits exactly on top
- * of the photo, aligned to the character's face coordinates.
- * The SVG viewBox is 100x100, mapped to the circular frame.
- */
-.sprout-face-overlay {
-    position: absolute;
-    /* Position relative to the circular frame to align with the face */
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    height: 90%;
-    pointer-events: none;
-    z-index: 3;
-}
-
-/* ========== Leaf Overlay ========== */
-.sprout-leaf-overlay {
-    position: absolute;
-    top: -2%;
-    left: 30%;
-    width: 40%;
-    height: 25%;
-    transform-origin: center bottom;
-    pointer-events: none;
-    z-index: 2;
-}
-
-/* ========== Glass Shine ========== */
-.sprout-glass-shine {
+.sprout-frame {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg,
-            rgba(255, 255, 255, 0.35) 0%,
-            rgba(255, 255, 255, 0.05) 40%,
-            transparent 60%);
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
     pointer-events: none;
-    z-index: 4;
+    will-change: opacity;
+}
+
+.sprout-frame.active {
+    opacity: 1;
+}
+
+/* ========== Glow Ring ========== */
+.sprout-glow-ring {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    pointer-events: none;
+    transition: border-color 1s ease, box-shadow 1s ease;
+}
+
+.sprout-glow-ring.thriving {
+    border-color: rgba(52, 199, 89, 0.4);
+    box-shadow:
+        0 0 30px rgba(52, 199, 89, 0.25),
+        0 0 60px rgba(52, 199, 89, 0.1),
+        0 16px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* ========== State Overrides ========== */
+.sprout-stage.stubborn .sprout-frame-stack {
+    filter: saturate(0.4) brightness(0.8);
+}
+
+.sprout-stage.stubborn .sprout-glow-ring {
+    border-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.sprout-stage.fading .sprout-frame-stack {
+    filter: grayscale(0.8) brightness(0.5) blur(1px);
+}
+
+.sprout-stage.fading .sprout-glow-ring {
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sprout-stage.fading {
+    opacity: 0.6;
 }
 
 /* ========== Ground Shadow ========== */
-.sprout-ground-shadow {
-    width: 60%;
+.sprout-shadow {
+    width: 55%;
     height: 8px;
     margin-top: 8px;
     background: radial-gradient(ellipse, rgba(0, 0, 0, 0.5) 0%, transparent 70%);
@@ -131,23 +113,23 @@
     flex-shrink: 0;
 }
 
-/* ========== Particles ========== */
-.sprout-particle {
-    position: absolute;
-    font-size: 24px;
-    pointer-events: none;
-    z-index: 10;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+/* ========== Hover effect ========== */
+.sprout-stage:hover .sprout-body-container {
+    filter: brightness(1.05);
+}
+
+.sprout-stage:active .sprout-body-container {
+    transform: scale(0.96);
+    transition: transform 0.1s ease;
 }
 
 /* ========== Accessibility ========== */
 @media (prefers-reduced-motion: reduce) {
+    .sprout-frame {
+        transition: opacity 0.01ms !important;
+    }
 
-    .sprout-body,
-    .sprout-leaf-overlay,
-    .sprout-ground-shadow,
-    .sprout-particle {
+    .sprout-body-container {
         animation: none !important;
-        transition: none !important;
     }
 }

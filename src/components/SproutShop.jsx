@@ -1,29 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingBag, CloudRain, Glasses, Sparkles } from 'lucide-react';
+import { ShoppingBag, CloudRain, Glasses, Sparkles, Crown, Music } from 'lucide-react';
 import Button from './Button';
 import './SproutShop.css';
 
 const CosmeticsData = [
     { id: 1, name: 'Cool Shades', price: 50, currency: 'spark', icon: <Glasses size={32} /> },
     { id: 2, name: 'Golden Aura', price: 200, currency: 'spark', icon: <Sparkles size={32} /> },
+    { id: 3, name: 'Flower Crown', price: 150, currency: 'spark', icon: <Crown size={32} /> },
+    { id: 4, name: 'Lofi Beats Player', price: 300, currency: 'spark', icon: <Music size={32} /> },
 ];
 
-const SproutShop = ({ sparkPoints, onPurchase }) => {
+const SproutShop = ({ sparkPoints, onPurchase, showToast }) => {
+    const [ownedItems, setOwnedItems] = useState(() => {
+        const saved = localStorage.getItem('sprout_owned_cosmetics');
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem('sprout_owned_cosmetics', JSON.stringify(ownedItems));
+    }, [ownedItems]);
+
     const handleSabotage = () => {
-        alert("Apple Pay Sheet: Buy Sabotage for $0.99?");
+        showToast("In-App Purchases (Fiat) coming soon!", 0);
     };
 
     const handleBailout = () => {
-        alert("Apple Pay Sheet: Buy Habit Bailout for $1.99?");
+        showToast("In-App Purchases (Fiat) coming soon!", 0);
     };
 
     const buyCosmetic = (item) => {
+        if (ownedItems.includes(item.id)) {
+            showToast(`${item.name} is already equipped!`, 0);
+            return;
+        }
+
         if (sparkPoints >= item.price) {
             onPurchase(item.price);
-            alert(`Equipped ${item.name}!`);
+            setOwnedItems(prev => [...prev, item.id]);
+            showToast(`Equipped ${item.name}!`, -item.price);
         } else {
-            alert("Not enough Spark Points.");
+            showToast("Not enough Spark Points to buy this.", 0);
         }
     };
 
@@ -77,23 +94,26 @@ const SproutShop = ({ sparkPoints, onPurchase }) => {
                 <p className="section-desc">Spend your hard-earned Spark points.</p>
 
                 <div className="cosmetics-grid">
-                    {CosmeticsData.map(item => (
-                        <motion.div key={item.id} className="cosmetic-item" whileHover={{ y: -5 }}>
-                            <div className="cosmetic-preview">
-                                {item.icon}
-                            </div>
-                            <div className="cosmetic-details">
-                                <span className="cosmetic-name">{item.name}</span>
-                                <Button
-                                    variant="glass"
-                                    onClick={() => buyCosmetic(item)}
-                                    className={`buy-btn ${sparkPoints < item.price ? 'disabled' : ''}`}
-                                >
-                                    ✨ {item.price}
-                                </Button>
-                            </div>
-                        </motion.div>
-                    ))}
+                    {CosmeticsData.map(item => {
+                        const isOwned = ownedItems.includes(item.id);
+                        return (
+                            <motion.div key={item.id} className={`cosmetic-item ${isOwned ? 'owned' : ''}`} whileHover={{ y: -5 }}>
+                                <div className="cosmetic-preview">
+                                    {item.icon}
+                                </div>
+                                <div className="cosmetic-details">
+                                    <span className="cosmetic-name">{item.name}</span>
+                                    <Button
+                                        variant="glass"
+                                        onClick={() => buyCosmetic(item)}
+                                        className={`buy-btn ${sparkPoints < item.price && !isOwned ? 'disabled' : ''} ${isOwned ? 'owned-btn' : ''}`}
+                                    >
+                                        {isOwned ? "✓ Equipped" : `✨ ${item.price}`}
+                                    </Button>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </section>
 

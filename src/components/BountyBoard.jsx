@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Flame, Link, Trophy } from 'lucide-react';
 import Button from './Button';
@@ -11,7 +11,30 @@ const MOCK_LEADERBOARD = [
     { rank: 42, user: "You", views: "1.2K", isMe: true },
 ];
 
-const BountyBoard = () => {
+const DAILY_BOUNTIES = [
+    "Buy coffee for the person behind you in the drive-thru.",
+    "Do 100 pushups in a public park and get someone to join.",
+    "Leave a 100% tip for a server and record their reaction.",
+    "Compliment 5 strangers on camera in under 3 minutes."
+];
+
+const BountyBoard = ({ showToast }) => {
+    const [url, setUrl] = useState("");
+    
+    // Compute bounty based on the day of the year directly during render
+    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+    const bountyIndex = dayOfYear % DAILY_BOUNTIES.length;
+
+    const handleSubmit = () => {
+        if (!url || !url.startsWith("http")) {
+            if (showToast) showToast("Please enter a valid URL.", 0);
+            return;
+        }
+
+        if (showToast) showToast("Evidence submitted! Pending DAO verification.", 10);
+        setUrl("");
+    };
+
     return (
         <div className="bounty-board-container layout-fade-in">
             <header className="bounty-header">
@@ -29,7 +52,7 @@ const BountyBoard = () => {
                     <Flame size={16} fill="currentColor" color="#FF3B30" />
                     <span>Daily Viral Bounty</span>
                 </div>
-                <h3>Buy coffee for the person behind you in the drive-thru.</h3>
+                <h3>{DAILY_BOUNTIES[bountyIndex]}</h3>
                 <p className="bounty-prize">Prize Pool: <strong>$500.00</strong> + Excl. Cosmetic</p>
                 <p className="countdown">Closes in: 08:42:10</p>
             </motion.div>
@@ -40,9 +63,15 @@ const BountyBoard = () => {
                 <div className="input-row">
                     <div className="input-wrapper">
                         <Link size={16} className="input-icon" />
-                        <input type="url" placeholder="https://tiktok.com/@..." className="bounty-input" />
+                        <input 
+                            type="url" 
+                            placeholder="https://tiktok.com/@..." 
+                            className="bounty-input" 
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                        />
                     </div>
-                    <Button variant="primary">Submit</Button>
+                    <Button variant="primary" onClick={handleSubmit}>Submit</Button>
                 </div>
             </div>
 

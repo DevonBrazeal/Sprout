@@ -8,9 +8,9 @@ import './Onboarding.css';
 
 // ── Intro video imports (only import files that exist) ──
 let introSeedFall, introGerminate, introEmerge;
-try { introSeedFall = new URL('../assets/intro_seed_fall.mp4', import.meta.url).href; } catch (e) { introSeedFall = null; }
-try { introGerminate = new URL('../assets/intro_germinate.mp4', import.meta.url).href; } catch (e) { introGerminate = null; }
-try { introEmerge = new URL('../assets/intro_emerge.mp4', import.meta.url).href; } catch (e) { introEmerge = null; }
+try { introSeedFall = new URL('../assets/intro_seed_fall.mp4', import.meta.url).href; } catch { introSeedFall = null; }
+try { introGerminate = new URL('../assets/intro_germinate.mp4', import.meta.url).href; } catch { introGerminate = null; }
+try { introEmerge = new URL('../assets/intro_emerge.mp4', import.meta.url).href; } catch { introEmerge = null; }
 
 // Clips 2-3: play after the user taps the seed (add intro_alive when ready)
 const GROWTH_CLIPS = [
@@ -70,7 +70,7 @@ const Onboarding = ({ onComplete, addPoints }) => {
         setStep('vibe');
     };
 
-    const handleVibeSelect = (vibe) => {
+    const handleVibeSelect = () => {
         setStep('hatch');
         addPoints('sprout', 5);
         showToast("Identity Established.", 5);

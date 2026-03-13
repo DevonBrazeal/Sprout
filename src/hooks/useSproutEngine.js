@@ -64,7 +64,12 @@ export const useSproutEngine = () => {
         return saved ? JSON.parse(saved) : initialState;
     });
 
-    const lastInteraction = useRef(state.lastInteractionAt || Date.now());
+    const [now] = useState(() => Date.now());
+    const initialInteractionRef = useRef(null);
+    if (!initialInteractionRef.current) {
+        initialInteractionRef.current = state.lastInteractionAt || now;
+    }
+    const lastInteraction = useRef(initialInteractionRef.current);
 
     // Persist to localStorage
     useEffect(() => {

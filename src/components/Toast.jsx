@@ -43,7 +43,9 @@ const Toast = ({ message, points = 1, isVisible, onClose, duration = 3000 }) => 
                             <Sparkles size={20} color="var(--color-white)" />
                         </div>
                         <div className="sprout-toast-text">
-                            <span className="sprout-toast-points">+{points} Spark Point</span>
+                            <span className={`sprout-toast-points ${points < 0 ? 'spent' : 'earned'}`}>
+                                {points > 0 ? '+' : ''}{points} Spark {Math.abs(points) === 1 ? 'Point' : 'Points'}
+                            </span>
                             <span className="sprout-toast-message">{message}</span>
                         </div>
                     </div>

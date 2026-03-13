@@ -184,3 +184,15 @@
     opacity: 0.5;
     pointer-events: none;
 }
+
+.cosmetic-item.owned {
+    opacity: 0.7;
+    border-color: var(--color-sprout-green);
+    background: rgba(52, 199, 89, 0.05);
+}
+
+.own-btn {
+    background: var(--color-sprout-green);
+    color: white;
+    border-color: var(--color-sprout-green);
+}

@@ -370,8 +370,8 @@ const Home = ({ points, addPoints }) => {
             {activeTab === 'spark' && (
                 <SparkStream onReceiveSunlight={() => { engine.doCare('sun'); fireAction('sun', 'Sunlight received! ☀️', 1200); }} />
             )}
-            {activeTab === 'vaults' && <Vaults />}
-            {activeTab === 'bounty' && <BountyBoard />}
+            {activeTab === 'vaults' && <Vaults showToast={showToast} />}
+            {activeTab === 'bounty' && <BountyBoard showToast={showToast} />}
             {activeTab === 'profile' && <DigitalGarden />}
             {activeTab === 'shop' && <SproutShop sparkPoints={points.spark} onPurchase={(price) => addPoints('spark', -price)} />}
 

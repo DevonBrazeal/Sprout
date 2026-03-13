@@ -53,7 +53,6 @@ const SproutCharacter = ({
     state = 'thriving',
     mood,
     action = null,
-    growth = 50,
     size = 300,
     onClick,
     onActionComplete = () => { },
@@ -149,23 +148,25 @@ const SproutCharacter = ({
 
         if (videoConfig.loop) {
             // For looping action videos (happy, sun), show for a set duration then return
-            switchTo(videoName);
-            setIsPlayingAction(true);
+            setTimeout(() => {
+                switchTo(videoName);
+                setIsPlayingAction(true);
+            }, 0);
             const dur = action === 'quest' ? 3500 : 2000;
             setTimeout(() => {
                 setIsPlayingAction(false);
                 switchTo(getBaseVideo());
-                onActionComplete();
+                if (onActionComplete) onActionComplete();
             }, dur);
         } else {
-            playOneShot(videoName, onActionComplete);
+            setTimeout(() => playOneShot(videoName, onActionComplete), 0);
         }
-    }, [action]);
+    }, [action, getBaseVideo, onActionComplete, playOneShot, switchTo]);
 
     // --- State/mood change → switch base video ---
     useEffect(() => {
         if (!isPlayingAction) {
-            switchTo(getBaseVideo());
+            setTimeout(() => switchTo(getBaseVideo()), 0);
         }
     }, [effectiveMood, isPlayingAction, getBaseVideo, switchTo]);
 
